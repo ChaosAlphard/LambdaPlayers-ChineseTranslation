@@ -109,8 +109,8 @@ local function Spray( self )
 end
 
 
-AddBuildFunctionToLambdaBuildingFunctions( "prop", "Allow Prop Spawning", "If Lambda Players are allowed to spawn props", SpawnAProp )
-AddBuildFunctionToLambdaBuildingFunctions( "npc", "Allow NPC Spawning", "If Lambda Players are allowed to spawn NPCs", SpawnNPC )
-AddBuildFunctionToLambdaBuildingFunctions( "entity", "Allow Entity Spawning", "If Lambda Players are allowed to spawn Entities", SpawnEntity )
-AddBuildFunctionToLambdaBuildingFunctions( "spray", "Allow Sprays", "If Lambda Players are allowed to place Sprays", Spray )
+AddBuildFunctionToLambdaBuildingFunctions( "prop", "允许生成道具", "Lambda Player 可以生成道具", SpawnAProp )
+AddBuildFunctionToLambdaBuildingFunctions( "npc", "允许生成NPC", "Lambda Player 可以生成NPC", SpawnNPC )
+AddBuildFunctionToLambdaBuildingFunctions( "entity", "允许生成实体", "Lambda Player 可以生成实体", SpawnEntity )
+AddBuildFunctionToLambdaBuildingFunctions( "spray", "允许使用喷漆", "Lambda Player 可以使用喷漆", Spray )
 table_insert( LambdaBuildingFunctions, { "prop", GetConVar( "lambdaplayers_building_allowprop" ), SpawnAPropandPickUp } ) -- Pretty much made this be connected to the prop spawning option

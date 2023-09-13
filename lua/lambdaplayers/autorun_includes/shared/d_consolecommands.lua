@@ -27,7 +27,7 @@ function CreateLambdaConsoleCommand( name, func, isclient, helptext, settingstbl
         settingstbl.concmd = name
         settingstbl.isclient = isclient
         settingstbl.type = "Button"
-        settingstbl.desc = ( isclient and "Client-Side | " or "Server-Side | " ) .. helptext .. "\nConsole Command: " .. name
+        settingstbl.desc = ( isclient and "[客户端]" or "[服务端]" ) .. helptext .. "\n控制台指令：" .. name
         
         _LAMBDAConVarNames[ name ] = true
         table_insert( _LAMBDAConVarSettings, settingstbl )
@@ -40,7 +40,7 @@ function AddConsoleCommandToLambdaSettings( cmd, isclient, helptext, settingstbl
     settingstbl.concmd = cmd
     settingstbl.isclient = isclient
     settingstbl.type = "Button"
-    settingstbl.desc = ( isclient and "Client-Side | " or "Server-Side | " ) .. helptext .. "\nConsole Command: " .. cmd
+    settingstbl.desc = ( isclient and "[客户端]" or "[服务端]" ) .. helptext .. "\n控制台指令：" .. cmd
 
     _LAMBDAConVarNames[ cmd ] = true
     table_insert( _LAMBDAConVarSettings, settingstbl )
@@ -50,8 +50,8 @@ local cooldown = 0
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_updatedata", function( ply ) 
     if IsValid( ply ) and !ply:IsSuperAdmin() then return end
-    if CurTime() < cooldown then LambdaPlayers_Notify( ply, "Command is on cooldown! Please wait 3 seconds before trying again", 1, "buttons/button10.wav" ) return end
-    print( "Lambda Players: Updated data via console command. Ran by ", ( IsValid( ply ) and ply:Name() .. " | " .. ply:SteamID() or "Console" )  )
+    if CurTime() < cooldown then LambdaPlayers_Notify( ply, "指令冷却中，等待3秒后再试", 1, "buttons/button10.wav" ) return end
+    print( "Lambda Players: 通过控制台指令更新数据. Ran by ", ( IsValid( ply ) and ply:Name() .. " | " .. ply:SteamID() or "Console" )  )
 
     LambdaPlayerNames = LAMBDAFS:GetNameTable()
     LambdaPlayerProps = LAMBDAFS:GetPropTable()
@@ -66,7 +66,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_updatedata", function( ply )
     LambdaPersonalProfiles = file.Exists( "lambdaplayers/profiles.json", "DATA" ) and LAMBDAFS:ReadFile( "lambdaplayers/profiles.json", "json" ) or nil
     LambdaUpdatePlayerModels()
 
-    LambdaPlayers_Notify( ply, "Updated Lambda Data", 3, "buttons/button15.wav" )
+    LambdaPlayers_Notify( ply, "已更新 Lambda 数据", 3, "buttons/button15.wav" )
 
     net.Start( "lambdaplayers_updatedata" )
     net.Broadcast()
@@ -75,7 +75,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_updatedata", function( ply )
 
     LambdaRunHook( "LambdaOnDataUpdate" )
 
-end, false, "Updates data such as names, props, ect. You must use this after any changes to custom content for changes to take effect!", { name = "Update Lambda Data", category = "Utilities" } )
+end, false, "更新名称、道具等数据。在对自定义内容进行更改后，必须使用此选项才能使更改生效", { name = "更新数据", category = "Utilities" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_cleanupclientsideents", function( ply ) 
 
@@ -84,9 +84,9 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_cleanupclientsideents", function(
     end
 
     surface.PlaySound( "buttons/button15.wav" )
-    notification.AddLegacy( "Cleaned up Client Side Entities!", 4, 3 )
+    notification.AddLegacy( "已清理客户端实体", 4, 3 )
 
-end, true, "Removes Lambda client side entities such as ragdolls and dropped weapons", { name = "Remove Lambda Client Side ents", category = "Utilities" } )
+end, true, "清理客户端实体，例如布娃娃和掉落的武器", { name = "清理客户端实体", category = "Utilities" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_cleanuplambdaents", function( ply ) 
     if IsValid( ply ) and !ply:IsAdmin() then return end
@@ -95,17 +95,17 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_cleanuplambdaents", function( ply
         if IsValid( v ) and v.IsLambdaSpawned then v:Remove() end
     end
 
-    LambdaPlayers_Notify( ply, "Cleaned up all Lambda entities!", 4, "buttons/button15.wav" )
-end, false, "Removes all entities that were spawned by Lambda Players", { name = "Cleanup Lambda Entities", category = "Utilities" } )
+    LambdaPlayers_Notify( ply, "已清理所有 Lambda 实体", 4, "buttons/button15.wav" )
+end, false, "清理 Lambda Players 产生的所有实体", { name = "清理 Lambda 实体", category = "Utilities" } )
 
-AddConsoleCommandToLambdaSettings( "r_cleardecals", true, "Removes all decals in the map for yourself. This does not remove decals premade in the map", { name = "Clean Decals", category = "Utilities" } )
+AddConsoleCommandToLambdaSettings( "r_cleardecals", true, "清理你在地图上的所有标记，这不会移除地图预制的标记", { name = "Clean Decals", category = "Utilities" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_cacheplayermodels", function( ply )
     if IsValid( ply ) and !ply:IsAdmin() then return end
 
     for k,v in pairs(player_manager.AllValidModels()) do util.PrecacheModel(v) end
     LambdaPlayers_Notify( ply, "Playermodels cached!", 0, "plats/elevbell1.wav" )
-end, false, "WARNING: Your game will freeze for a few seconds. This will vary on the amount of playermodels you have installed.", { name = "Cache Playermodels", category = "Utilities" } )
+end, false, "警告：这将会使游戏进入假死状态！时间根据你安装的玩家模型(PlayerModel)数量决定", { name = "缓存玩家模型", category = "Utilities" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcespawnlambda", function( ply ) 
 	if IsValid( ply ) and !ply:IsSuperAdmin() then return end
@@ -178,7 +178,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcespawnlambda", function( ply 
 	dynLight:Fire( "TurnOn", "", 0 )
 	dynLight:Fire( "Kill", "", 0.75 )
 
-end, false, "Spawns a Lambda Player at a random area", { name = "Spawn Lambda Player At Random Area", category = "Force Menu" } )
+end, false, "在随机区域生成一个 Lambda Player", { name = "生成 Lambda Player", category = "Force Menu" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcecombat", function( ply ) 
     if IsValid( ply ) and !ply:IsSuperAdmin() then return end
@@ -187,7 +187,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcecombat", function( ply )
         if IsValid( v ) and v.IsLambdaPlayer then v:AttackTarget( ply ) end
     end
 
-end, false, "Forces all Lambda Players to attack you", { name = "Lambda Players Attack You", category = "Force Menu" } )
+end, false, "强制所有 Lambda Player 攻击你", { name = "Lambda Players 攻击你", category = "Force Menu" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcecombatlambda", function( ply ) 
     if IsValid( ply ) and !ply:IsSuperAdmin() then return end
@@ -199,7 +199,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcecombatlambda", function( ply
 		end
     end
 
-end, false, "Forces all Lambda Players to attack anything", { name = "Lambda Players Attack Anything", category = "Force Menu" } )
+end, false, "强制所有 Lambda Player 攻击他们看到的任何东西", { name = "Lambda Players 攻击所有东西", category = "Force Menu" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcekill", function( ply ) 
     if IsValid( ply ) and !ply:IsSuperAdmin() then return end
@@ -215,7 +215,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcekill", function( ply )
         end
     end
 
-end, false, "Kill any Lambda Players in the radius set", { name = "Kill Nearby Lambda Players", category = "Force Menu" } )
+end, false, "杀死半径范围内的所有 Lambda Player", { name = "杀死附近的 Lambda Players", category = "Force Menu" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcepanic", function( ply ) 
     if IsValid( ply ) and !ply:IsSuperAdmin() then return end
@@ -226,15 +226,15 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_forcepanic", function( ply )
         end
     end
 
-end, false, "Forces any Lambda Players around will panic", { name = "Lambda Players Panic Nearby", category = "Force Menu" } )
+end, false, "使半径范围内的所有 Lambda Player 陷入恐慌", { name = "使附近的 Lambda Players 恐慌", category = "Force Menu" } )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_debugtogglegod", function( ply ) 
     if IsValid( ply ) and !ply:IsAdmin() then return end
 
     ply.l_godmode = !ply.l_godmode
 
-    LambdaPlayers_ChatAdd( ply, ply.l_godmode and "Enabled God mode" or "Disabled God mode" )
-end, false, "Toggles God Mode, preventing any further damage to you", { name = "Toggle God Mode", category = "Debugging" } )
+    LambdaPlayers_ChatAdd( ply, ply.l_godmode and "进入上帝模式" or "退出上帝模式" )
+end, false, "阻止你受到任何伤害", { name = "切换上帝模式", category = "Debugging" } )
 
 
 if CLIENT then
@@ -252,4 +252,4 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_updatedisplaycolor", function( pl
 
     _LambdaDisplayColor = Color( r:GetInt(), g:GetInt(), b:GetInt() )
 
-end, true, "Applies any changes done to Display Color", { name = "Update Display Color", category = "Misc" } )
+end, true, "应用对显示颜色(Display Color)所进行的更改", { name = "更新显示颜色", category = "Misc" } )

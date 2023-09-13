@@ -9,7 +9,7 @@ function LambdaReloadAddon( ply )
 
     if SERVER and IsValid( ply ) then 
         if !ply:IsSuperAdmin() then return end -- No lol
-        PrintMessage( HUD_PRINTTALK, "SERVER is reloading all Lambda Lua files.." )
+        PrintMessage( HUD_PRINTTALK, "服务器正在重载 Lua 文件/SERVER is reloading all Lambda Lua files.." )
     end
 
     if SERVER then
@@ -18,7 +18,7 @@ function LambdaReloadAddon( ply )
 
         for k, luafile in ipairs( serversidefiles ) do
             include( "lambdaplayers/autorun_includes/server/" .. luafile )
-            print( "Lambda Players: Included Server Side Lua File [ " .. luafile .. " ]" )
+            print( "Lambda Players: 已载入服务端 Lua 文件/Included Server Side Lua File [ " .. luafile .. " ]" )
         end
 
     end
@@ -32,7 +32,7 @@ function LambdaReloadAddon( ply )
             AddCSLuaFile( "lambdaplayers/autorun_includes/shared/" .. luafile )
         end
         include( "lambdaplayers/autorun_includes/shared/" .. luafile )
-        print( "Lambda Players: Included Shared Lua File [ " .. luafile .. " ]" )
+        print( "Lambda Players: 已载入共享 Lua 文件/Included Shared Lua File [ " .. luafile .. " ]" )
     end
 
     print("\n")
@@ -45,12 +45,12 @@ function LambdaReloadAddon( ply )
             AddCSLuaFile( "lambdaplayers/autorun_includes/client/" .. luafile )
         elseif CLIENT then
             include( "lambdaplayers/autorun_includes/client/" .. luafile )
-            print( "Lambda Players: Included Client Side Lua File [ " .. luafile .. " ]" )
+            print( "Lambda Players: 已载入客户端 Lua 文件/Included Client Side Lua File [ " .. luafile .. " ]" )
         end
     end
     --
 
-    print( "Lambda Players: Preparing to load External Addon Lua Files.." )
+    print( "Lambda Players: 准备加载外部 Lua 文件/Preparing to load External Addon Lua Files.." )
 
     -- External Addon Includes --
     if SERVER then
@@ -59,7 +59,7 @@ function LambdaReloadAddon( ply )
 
         for k, luafile in ipairs( serversidefiles ) do
             include( "lambdaplayers/extaddon/server/" .. luafile )
-            print( "Lambda Players: Included Server Side External Lua File [ " .. luafile .. " ]" )
+            print( "Lambda Players: 已载入服务端外部 Lua 文件/Included Server Side External Lua File [ " .. luafile .. " ]" )
         end
 
     end
@@ -73,7 +73,7 @@ function LambdaReloadAddon( ply )
             AddCSLuaFile( "lambdaplayers/extaddon/shared/" .. luafile )
         end
         include( "lambdaplayers/extaddon/shared/" .. luafile )
-        print( "Lambda Players: Included Shared External Lua File [ " .. luafile .. " ]" )
+        print( "Lambda Players: 已载入共享外部 Lua 文件/Included Shared External Lua File [ " .. luafile .. " ]" )
     end
 
     print("\n")
@@ -86,16 +86,16 @@ function LambdaReloadAddon( ply )
             AddCSLuaFile( "lambdaplayers/extaddon/client/" .. luafile )
         elseif CLIENT then
             include( "lambdaplayers/extaddon/client/" .. luafile )
-            print( "Lambda Players: Included Client Side External Lua File [ " .. luafile .. " ]" )
+            print( "Lambda Players: 已载入客户端外部 Lua 文件/Included Client Side External Lua File [ " .. luafile .. " ]" )
         end
     end
 
-    print( "Lambda Players: Loaded all External Addon Lua Files!")
+    print( "Lambda Players: 所有文件加载完毕 / Loaded all External Addon Lua Files!")
     hook.Run( "LambdaOnModulesLoaded" )
     --
 
     if SERVER and IsValid( ply ) then 
-        PrintMessage( HUD_PRINTTALK, "SERVER has reloaded all Lambda Lua files" )
+        PrintMessage( HUD_PRINTTALK, "服务器已经重载所有 Lua 文件 / SERVER has reloaded all Lambda Lua files" )
     end
 
     if SERVER and LambdaHasFirstInit then
@@ -135,7 +135,7 @@ for k, v in pairs( LambdaVoiceProfiles ) do
 end
 combotable[ "None" ] = "" 
 
-CreateLambdaConvar( "lambdaplayers_lambda_voiceprofile", "", true, true, true, "The Voice Profile your newly spawned Lambda Players should spawn with. Note: This will only work if the server has the specified Voice Profile", 0, 1, { type = "Combo", options = combotable, name = "Voice Profile", category = "Lambda Player Settings" } )
+CreateLambdaConvar( "lambdaplayers_lambda_voiceprofile", "", true, true, true, "设置新生成的 LambdaPlayer 所使用的语音配置文件(VoiceProfile)。注意：需要服务器拥有对应的语音配置文件才会生效", 0, 1, { type = "Combo", options = combotable, name = "Voice Profile", category = "Lambda Player Settings" } )
 --
 
 -- Text Profiles --
@@ -146,7 +146,7 @@ for k, v in pairs( LambdaTextProfiles ) do
 end
 combotable[ "None" ] = "" 
 
-CreateLambdaConvar( "lambdaplayers_lambda_textprofile", "", true, true, true, "The Text Profile your newly spawned Lambda Players should spawn with. Note: This will only work if the server has the specified Text Profile", 0, 1, { type = "Combo", options = combotable, name = "Text Profile", category = "Lambda Player Settings" } )
+CreateLambdaConvar( "lambdaplayers_lambda_textprofile", "", true, true, true, "设置新生成的 LambdaPlayer 所使用的聊天配置文件(TextProfile)。注意：需要服务器拥有对应的聊天配置文件才会生效", 0, 1, { type = "Combo", options = combotable, name = "Text Profile", category = "Lambda Player Settings" } )
 --
 
 -- This will reload the Lambda addon ingame without having to resave this lua file and trigger a lua refresh

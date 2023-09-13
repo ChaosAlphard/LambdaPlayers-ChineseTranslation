@@ -5,8 +5,8 @@ local CurTime = CurTime
 local Rand = math.Rand
 local bor = bit.bor
 
-local useReworkedVariant = CreateLambdaConvar( "lambdaplayers_weapons_fistsreworked", 0, true, false, true, "If Lambda Player's fists should use their reworked stats instead of default Gmod ones.", 0, 1, { type = "Bool", name = "Fists - Use Reworked Stats", category = "Weapon Utilities" } )
-local useAltSounds = CreateLambdaConvar( "lambdaplayers_weapons_fistsaltsounds", 0, true, false, true, "If Lambda Player's fists should use alternate sounds instead of Half-Life 2 sounds.", 0, 1, { type = "Bool", name = "Fists - Use Alternate Sounds", category = "Weapon Utilities" } )
+local useReworkedVariant = CreateLambdaConvar( "lambdaplayers_weapons_fistsreworked", 0, true, false, true, "Lambda Player 的拳头使用修改后的属性而不是《Garry's Mod》的属性", 0, 1, { type = "Bool", name = "拳头 - 修改属性", category = "Weapon Utilities" } )
+local useAltSounds = CreateLambdaConvar( "lambdaplayers_weapons_fistsaltsounds", 0, true, false, true, "Lambda Player 的拳头使用替换的音效而不是《Half-Life 2》的音效", 0, 1, { type = "Bool", name = "拳头 - 替换音效", category = "Weapon Utilities" } )
 
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
     gmod_fists = {

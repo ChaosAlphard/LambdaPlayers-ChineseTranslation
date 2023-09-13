@@ -11,7 +11,7 @@ local ipairs = ipairs
 
 game.AddParticles("particles/bigboom.pcf")
 
-local busterMode = CreateLambdaConvar( "lambdaplayers_weapons_paigsentrybuster", 0, true, false, true, "If Lambda that spawn with the PAIG have the ability to act like the Sentry Buster from TF2.", 0, 1, { type = "Bool", name = "PAIG - Enable Sentry Buster Mode", category = "Weapon Utilities" } )
+local busterMode = CreateLambdaConvar( "lambdaplayers_weapons_paigsentrybuster", 0, true, false, true, "生成时带有PAIG的 Lambda Player 拥有TF2中哨兵破坏者的能力\nIf Lambda that spawn with the PAIG have the ability to act like the Sentry Buster from TF2.", 0, 1, { type = "Bool", name = "PAIG - Enable Sentry Buster Mode", category = "Weapon Utilities" } )
 
 local function OnPAIGRemoved( self )
     self:StopSound( "lambdaplayers/weapons/paig/sb_intro.mp3" )
@@ -37,7 +37,7 @@ table.Merge( _LAMBDAPLAYERSWEAPONS, {
             if !wepent.SentryBusterMode then return end
             
             wepent:EmitSound( "lambdaplayers/weapons/paig/sb_intro.mp3" )
-           
+
             wepent.LoopSound = CreateSound( wepent, "lambdaplayers/weapons/paig/sb_loop.wav" ) -- Looping only works on .WAV formats, unfortunately
             if wepent.LoopSound then wepent.LoopSound:Play() end
 

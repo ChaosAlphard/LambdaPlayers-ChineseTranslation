@@ -231,8 +231,8 @@ local function OpenWeaponPermissionPanel( ply )
     mainframe:OnSizeChanged( mainframe:GetWide() )
 end
 
-CreateLambdaConsoleCommand( "lambdaplayers_lambda_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "Opens a panel that allows you to select the weapon the next spawned Lambda Player by you will start with", { name = "Select Spawn Weapon", category = "Lambda Weapons" } )
-CreateLambdaConsoleCommand( "lambdaplayers_lambda_openweaponpermissionpanel", OpenWeaponPermissionPanel, true, "Opens a panel that allows you to allow and disallow certain weapons to be used by Lambda Players", { name = "Select Weapon Permissions", category = "Lambda Weapons" } )
+CreateLambdaConsoleCommand( "lambdaplayers_lambda_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "选择 Lambda Player 出生时自带的武器", { name = "设置出生武器", category = "Lambda Weapons" } )
+CreateLambdaConsoleCommand( "lambdaplayers_lambda_openweaponpermissionpanel", OpenWeaponPermissionPanel, true, "选择 Lambda Player 可以使用的武器", { name = "设置武器许可", category = "Lambda Weapons" } )
 
 -- One part of the duplicator support
 -- Register the Lambdas so the duplicator knows how to handle these guys

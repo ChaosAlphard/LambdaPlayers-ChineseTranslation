@@ -1,6 +1,6 @@
 local random = math.random
 local CurTime = CurTime
-local backstabCvar = CreateLambdaConvar( "lambdaplayers_weapons_knifebackstab", 1, true, false, true, "If Lambda Players should be allowed to use the backstab feature of the Knife.", 0, 1, { type = "Bool", name = "Knife - Enable Backstab", category = "Weapon Utilities" } )
+local backstabCvar = CreateLambdaConvar( "lambdaplayers_weapons_knifebackstab", 1, true, false, true, "允许 Lambda Players 使用海豹短刀(Knife)的背刺特性", 0, 1, { type = "Bool", name = "短刀 - 启用背刺", category = "Weapon Utilities" } )
 
 table.Merge( _LAMBDAPLAYERSWEAPONS, {
 

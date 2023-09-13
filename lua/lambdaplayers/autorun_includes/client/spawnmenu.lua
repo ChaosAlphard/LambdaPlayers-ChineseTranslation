@@ -41,7 +41,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.WriteString( val and "1" or "0" )
                 net.SendToServer()
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can change Server-Side settings!")
+                chat.AddText( "只有服务器管理员(Super Admins)能更改服务器设置")
             end
         end
 
@@ -57,7 +57,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.WriteString( val )
                 net.SendToServer()
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can change Server-Side settings!")
+                chat.AddText( "只有服务器管理员(Super Admins)能更改服务器设置")
             end
         end
         
@@ -72,7 +72,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.WriteString( tostring( val ) )
                 net.SendToServer()
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can change Server-Side settings!")
+                chat.AddText( "只有服务器管理员(Super Admins)能更改服务器设置")
             end
         end
 
@@ -106,7 +106,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.SendToServer()
 
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can change Server-Side settings!")
+                chat.AddText( "只有服务器管理员(Super Admins)能更改服务器设置")
             end
         end
     elseif paneltype == "Combo" then 
@@ -120,7 +120,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.WriteString( tostring( data ) )
                 net.SendToServer()
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can change Server-Side settings!")
+                chat.AddText( "只有服务器管理员(Super Admins)能更改服务器设置")
             end
         end
 
@@ -134,7 +134,7 @@ local function InstallMPConVarHandling( PANEL, convar, paneltype, isserverside )
                 net.WriteString( convar )
                 net.SendToServer()
             elseif !game.SinglePlayer() and isserverside and !LocalPlayer():IsSuperAdmin() then
-                chat.AddText( "Only Super Admins can run Server-Side Console Commands!")
+                chat.AddText( "只有服务器管理员(Super Admins)能运行服务器指令")
             end
         end
 

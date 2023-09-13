@@ -397,7 +397,7 @@ function LambdaGetPossibleSpawns()
     table_Add( info_player_starts, info_coop_spawn )
     table_Add( info_player_starts, info_survivor_position )
 
-    if #info_player_starts == 0 then ErrorNoHaltWithStack( "LAMBDA PLAYERS: ATTEMPT TO GET SPAWN POINTS IN A MAP WITH NO PLAYER SPAWNS!" ) end
+    if #info_player_starts == 0 then ErrorNoHaltWithStack( "LAMBDA PLAYERS: 在没有玩家出生点的地图中试图获取出生点/ATTEMPT TO GET SPAWN POINTS IN A MAP WITH NO PLAYER SPAWNS!" ) end
     return info_player_starts
 end
 
