@@ -84,8 +84,8 @@ hook.Add( "LambdaOnModulesLoaded", "lambdaplayers_mwspersonalities", function()
         local convar = CreateLambdaConvar( "lambdaplayers_mwspersonality_" .. mwsPersonalityName .. "chance", 30, true, false, false, "进行" .. mwsPersonalityTransVal .. " 行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = mwsPersonalityTransVal .. "行为概率", category = "MWS" } )
         table_insert( MWSConvars, { mwsPersonalityName, convar } )
     end
-    CreateLambdaConvar( "lambdaplayers_mwspersonality_voicechance", 30, true, false, false, "进行语音行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "语音行为概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", category = "MWS" } )
-    CreateLambdaConvar( "lambdaplayers_mwspersonality_textchance", 30, true, false, false, "进行聊天行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "聊天行为概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", category = "MWS" } )
+    CreateLambdaConvar( "lambdaplayers_mwspersonality_voicechance", 30, true, false, false, "进行语音行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = "语音行为概率", category = "MWS" } )
+    CreateLambdaConvar( "lambdaplayers_mwspersonality_textchance", 30, true, false, false, "进行聊天行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = "聊天行为概率", category = "MWS" } )
 end )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_openmwscustompersonalitypresetpanel", function( ply ) 
