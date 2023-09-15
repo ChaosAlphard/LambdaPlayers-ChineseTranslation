@@ -61,7 +61,7 @@ CreateLambdaConvar( "lambdaplayers_lambdaadmin_adminchance", 100, true, false, f
 CreateLambdaConvar( "lambdaplayers_lambdaadmin_ignoreplayers", 0, true, false, false, "管理员应该忽视玩家破环规则的行为", 0, 1, { type = "Bool", name = "忽视玩家", category = "Admins" } )
 local donothurtplayers = CreateLambdaConvar( "lambdaplayers_lambdaadmin_ruledonothurtplayers", 1, true, false, false, "禁止伤害其他玩家", 0, 1, { type = "Bool", name = "规则：禁止伤害玩家", category = "Admins" } )
 local noswearing = CreateLambdaConvar( "lambdaplayers_lambdaadmin_rulenoswearing", 1, true, false, false, "禁止在聊天框里发脏话", 0, 1, { type = "Bool", name = "规则：禁止脏话", category = "Admins" } )
-local nordm = CreateLambdaConvar( "lambdaplayers_lambdaadmin_rulenordm", 0, true, false, false, "禁止随便攻击其他人(No RDM)", 0, 1, { type = "Bool", name = "规则：禁止攻击其他人", category = "Admins" } )
+local nordm = CreateLambdaConvar( "lambdaplayers_lambdaadmin_rulenordm", 0, true, false, false, "禁止随便攻击其他人 / No RDM", 0, 1, { type = "Bool", name = "规则：禁止攻击其他人", category = "Admins" } )
 CreateLambdaColorConvar( "lambdaplayers_lambdaadmincolor", Color( 81, 255, 0 ), true, true, "管理员的显示颜色", { name = "管理员显示颜色", category = "Admins" } )
 LambdaRegisterVoiceType( "adminscold", "lambdaplayers/vo/adminscold", "这是管理员质问破环规则的人时播放的语音" )
 LambdaRegisterVoiceType( "sitrespond", "lambdaplayers/vo/sitrespond", "这是破环规则的人回应管理员时播放的语音" )

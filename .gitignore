@@ -33,7 +33,7 @@ build/
 .vscode/
 
 ### Other ###
-*.lnk
-*.txt
-*.png
-*.pdn
+/*.lnk
+/*.txt
+/*.png
+/*.pdn
