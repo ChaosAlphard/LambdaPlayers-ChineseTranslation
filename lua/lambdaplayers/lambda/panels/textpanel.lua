@@ -12,8 +12,8 @@ local function OpenTextPanel( ply )
         chat.AddText( "Remember to Update Lambda Data after any changes!" )
     end
 
-    LAMBDAPANELS:CreateURLLabel( "Click here to learn about the default text types and keywords", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Text-Chat", frame, TOP )
-    LAMBDAPANELS:CreateLabel( "Right Click a line to remove it", frame, TOP )
+    LAMBDAPANELS:CreateURLLabel( "点击这里了解默认的文本类型与关键字", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Text-Chat", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "右键移除", frame, TOP )
 
     local framescroll = LAMBDAPANELS:CreateScrollPanel( frame, true, FILL )
 
@@ -173,4 +173,4 @@ local function OpenTextPanel( ply )
 
 end
 
-RegisterLambdaPanel( "Text Lines", "Opens a panel that allows you to create custom Text Lines for Lambda Players. You must be a Super Admin to use this Panel. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES!", OpenTextPanel )
+RegisterLambdaPanel( "Text Lines", "为 Lambda Player 添加自定义聊天文本。修改后需要更新Lambda数据", OpenTextPanel )

@@ -8,22 +8,24 @@ LambdaPersonalityConVars = {}
 -- Personalities are called when a Lambda Player is idle and wants to test a chance
 
 local presettbl = {
-    [ "Random" ] = "random",
-    [ "Builder" ] = "builder",
-    [ "Fighter" ] = "fighter",
-    [ "Custom" ] = "custom",
-    [ "Custom Random" ] = "customrandom"
+    [ "随机" ] = "random",
+    [ "建造型" ] = "builder",
+    [ "进攻型" ] = "fighter",
+    [ "自定义" ] = "custom",
+    [ "随机自定义" ] = "customrandom"
 }
 
-CreateLambdaConvar( "lambdaplayers_personality_preset", "random", true, true, true, "Lambda Player 的性格预设。仅能影响之后生成的 Lambda Player。设置为 Custom 以使用下方的概率滑块", nil, nil, { type = "Combo", options = presettbl, name = "个性预设", category = "Lambda Player Settings" } )
+CreateLambdaConvar( "lambdaplayers_personality_preset", "random", true, true, true, "Lambda Player 的性格预设。仅能影响之后生成的 Lambda Player。设置为 Custom 以使用下方的概率滑块", nil, nil, { type = "Combo", options = presettbl, name = "性格预设", category = "Lambda Player Settings" } )
 
 function LambdaCreatePersonalityType( personalityname, func )
-    local personalityTransMap = {}
-    personalityTransMap["Build"] = "建造"
-    personalityTransMap["Tool"] = "工具枪"
-    personalityTransMap["Combat"] = "战斗"
-    personalityTransMap["Friendly"] = "友好"
-    local convar = CreateLambdaConvar( "lambdaplayers_personality_" .. personalityname .. "chance", 30, true, true, true, "进行" .. personalityTransMap[personalityname] .. "行为的概率。个性预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = personalityTransMap[personalityname] .. "行为概率", category = "Lambda Player Settings" } )
+    local personalityTransMap = {
+        ["Build"] = "建造",
+        ["Tool"] = "工具枪",
+        ["Combat"] = "战斗",
+        ["Friendly"] = "友好"
+    }
+    local personalityTransVal = personalityTransMap[personalityname] or personalityname
+    local convar = CreateLambdaConvar( "lambdaplayers_personality_" .. personalityname .. "chance", 30, true, true, true, "进行" .. personalityTransVal .. "行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = personalityTransVal .. "行为概率", category = "Lambda Player Settings" } )
     table_insert( LambdaPersonalities, { personalityname, func } )
     table_insert( LambdaPersonalityConVars, { personalityname, convar } )
 end
@@ -114,13 +116,13 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_opencustompersonalitypresetpanel"
         tbl[ v[ 2 ]:GetName() ] = v[ 2 ]:GetDefault()
     end
     LAMBDAPANELS:CreateCVarPresetPanel( "Custom Personality Preset Editor", tbl, "custompersonalities", true )
-end, true, "创建和加载自定义个性预设", { name = "自定义个性预设", category = "Lambda Player Settings" } )
+end, true, "创建和加载自定义性格预设", { name = "自定义性格预设", category = "Lambda Player Settings" } )
 
 
 LambdaCreatePersonalityType( "Build", Chance_Build )
 LambdaCreatePersonalityType( "Tool", Chance_Tool )
 LambdaCreatePersonalityType( "Combat", Chance_Combat )
 LambdaCreatePersonalityType( "Friendly", Chance_Friendly )
-CreateLambdaConvar( "lambdaplayers_personality_voicechance", 30, true, true, true, "进行语音行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "语音行为概率", category = "Lambda Player Settings" } )
-CreateLambdaConvar( "lambdaplayers_personality_textchance", 30, true, true, true, "进行聊天行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "聊天行为概率", category = "Lambda Player Settings" } )
+CreateLambdaConvar( "lambdaplayers_personality_voicechance", 30, true, true, true, "进行语音行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = "语音行为概率", category = "Lambda Player Settings" } )
+CreateLambdaConvar( "lambdaplayers_personality_textchance", 30, true, true, true, "进行聊天行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = "聊天行为概率", category = "Lambda Player Settings" } )
 

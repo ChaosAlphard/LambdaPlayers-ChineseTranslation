@@ -29,7 +29,33 @@ LambdaToolGunTools = {}
 -- These functions will be under the Tool Chance
 -- See the functions below for examples on making tools
 function AddToolFunctionToLambdaTools( toolname, func )
-    local convar = CreateLambdaConvar( "lambdaplayers_tool_allow" .. toolname, 1, true, false, false, "If Lambda Players can use the " .. toolname .. " tool", 0, 1, { type = "Bool", name = "Allow " .. toolname .. " Tool", category = "Limits and Tool Permissions" } )
+    local toolTypeTransMap = {
+        ["Balloon"] = "使用气球工具",
+        ["Ballsocket"] = "使用球座工具",
+        ["Color"] = "使用颜色工具",
+        ["Creator"] = "使用建造者工具",
+        ["Dynamite"] = "使用爆炸物工具",
+        ["Elastic"] = "使用弹性工具",
+        ["Emitter"] = "使用发射器工具",
+        ["Faceposer"] = "使用面部调整工具",
+        ["Hoverball"] = "使用悬浮球工具",
+        ["KeepUpright"] = "使物体保持直立",
+        ["Ignite"] = "点燃物体",
+        ["Lamp"] = "使用电灯工具",
+        ["Light"] = "使用光源工具",
+        ["Material"] = "使用材质工具",
+        ["Paint"] = "使用喷漆工具",
+        ["PhysicalProperties"] = "使用物理特性工具",
+        ["Remover"] = "使用删除工具",
+        ["Rope"] = "使用绳子工具",
+        ["Slider"] = "使用滑轮工具",
+        ["Thruster"] = "使用推进器工具",
+        ["Trail"] = "使用尾迹工具",
+        ["Weld"] = "使用焊接工具",
+        ["Wheel"] = "使用车轮工具"
+    }
+    local toolTypeTransVal = toolTypeTransMap[toolname] or toolname
+    local convar = CreateLambdaConvar( "lambdaplayers_tool_allow" .. toolname, 1, true, false, false, "允许 Lambda Players " .. toolTypeTransVal, 0, 1, { type = "Bool", name = "允许" .. toolTypeTransVal, category = "Limits and Tool Permissions" } )
     table_insert( LambdaToolGunTools, { toolname, convar, func } )
 end
 

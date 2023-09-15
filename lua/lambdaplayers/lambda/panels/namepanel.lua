@@ -22,7 +22,7 @@ local function OpenNamePanel( ply )
     addtextentry:SetPlaceholderText( "Enter names here!" )
     addtextentry:Dock( BOTTOM )
 
-    LAMBDAPANELS:CreateLabel( "Remove a name by Right Clicking it", panel, TOP )
+    LAMBDAPANELS:CreateLabel( "右键移除", panel, TOP )
     LAMBDAPANELS:CreateLabel( "Remember to Update Lambda Data after any changes!", panel, TOP )
 
     local searchbar = LAMBDAPANELS:CreateSearchBar( listview, names, panel )
@@ -129,4 +129,4 @@ local function OpenNamePanel( ply )
 
 end
 
-RegisterLambdaPanel( "Lambda Names", "Opens a panel that allows you to create custom names for Lambda Players. You must be a Super Admin to use this Panel. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES!", OpenNamePanel )
+RegisterLambdaPanel( "Lambda Names", "创建自定义 Lambda Player 名称\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenNamePanel )

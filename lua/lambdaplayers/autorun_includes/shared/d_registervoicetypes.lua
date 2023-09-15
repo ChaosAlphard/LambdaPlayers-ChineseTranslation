@@ -8,17 +8,19 @@ LambdaValidVoiceTypes = {}
 -- defaultpath  | String |  The default directory for this voice type
 -- voicetypedescription     | String |  The description of when this voice type is typically used
 function LambdaRegisterVoiceType( voicetypename, defaultpath, voicetypedescription )
-    local voiceTypeTransMap = {}
-    voiceTypeTransMap["idle"] = "闲逛"
-    voiceTypeTransMap["taunt"] = "挑衅"
-    voiceTypeTransMap["death"] = "死亡"
-    voiceTypeTransMap["kill"] = "击杀"
-    voiceTypeTransMap["laugh"] = "嘲笑"
-    voiceTypeTransMap["fall"] = "摔落"
-    voiceTypeTransMap["assist"] = "助攻"
-    voiceTypeTransMap["witness"] = "目击"
-    voiceTypeTransMap["panic"] = "恐慌"
-    CreateLambdaConvar( "lambdaplayers_voice_" .. voicetypename .. "dir", defaultpath, true, false, false, "存放" .. voiceTypeTransMap[voicetypename] .. "语音的文件夹，修改后需要更新Lambda数据\n" .. voicetypedescription, nil, nil, { type = "Text", name = voiceTypeTransMap[voicetypename] .. "语音文件夹", category = "Voice Options" } )
+    local voiceTypeTransMap = {
+        ["idle"] = "闲逛",
+        ["taunt"] = "挑衅",
+        ["death"] = "死亡",
+        ["kill"] = "击杀",
+        ["laugh"] = "嘲笑",
+        ["fall"] = "摔落",
+        ["assist"] = "助攻",
+        ["witness"] = "目击",
+        ["panic"] = "恐慌"
+    }
+    local typeTransVal = voiceTypeTransMap[voicetypename] or voicetypename
+    CreateLambdaConvar( "lambdaplayers_voice_" .. voicetypename .. "dir", defaultpath, true, false, false, "存放" .. typeTransVal .. "语音的文件夹，修改后需要更新Lambda数据\n" .. voicetypedescription, nil, nil, { type = "Text", name = typeTransVal .. "语音文件夹", category = "Voice Options" } )
     table_insert( LambdaValidVoiceTypes, { voicetypename, "lambdaplayers_voice_" .. voicetypename .. "dir" } )
 end
 

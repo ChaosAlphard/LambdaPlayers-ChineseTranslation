@@ -4,7 +4,22 @@ LambdaEntityLimits = {}
 -- Creates a entity limit for keeping track of whatever entities
 -- See lambda/sv_entitylimits.lua for functions to add to the limit and check
 function CreateLambdaEntLimit( name, default, max )
-    CreateLambdaConvar( "lambdaplayers_limits_" .. name .. "limit", default, true, false, false, "The max amount of " .. name .. "s a lambda player is allowed to have", 0, max, { type = "Slider", name = name .. " Limit", decimals = 0, category = "Limits and Tool Permissions" } )
+    local entityLimitTransMap = {
+        ["Prop"] = "道具",
+        ["Entity"] = "实体",
+        ["NPC"] = "NPC",
+        ["Balloon"] = "气球",
+        ["Dynamite"] = "爆炸物",
+        ["Emitter"] = "发射器",
+        ["Hoverball"] = "悬浮球",
+        ["Lamp"] = "电灯",
+        ["Light"] = "光源",
+        ["Rope"] = "绳子",
+        ["Thruster"] = "推进器",
+        ["Wheel"] = "车轮"
+    }
+    local entityLimitTransVal = entityLimitTransMap[name] or name
+    CreateLambdaConvar( "lambdaplayers_limits_" .. name .. "limit", default, true, false, false, "Lambda Player 所能允许生成的" .. entityLimitTransVal .. "的最大数量限制", 0, max, { type = "Slider", name = entityLimitTransVal .. "数量限制", decimals = 0, category = "Limits and Tool Permissions" } )
     if SERVER then LambdaEntityLimits[ #LambdaEntityLimits + 1 ] = name end
 end
 

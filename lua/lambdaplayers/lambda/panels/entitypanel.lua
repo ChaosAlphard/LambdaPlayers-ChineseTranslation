@@ -5,7 +5,7 @@ local function OpenEntityPanel( ply )
 
     local frame = LAMBDAPANELS:CreateFrame( "Entity Panel", 600, 500 )
     local resettodefault = vgui.Create( "DButton", frame )
-    LAMBDAPANELS:CreateLabel( "Click on a Entity on the left to register it for use. Right click a row to the right to unregister it for use", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "左键添加，右键移除", frame, TOP )
     local leftpnl = vgui.Create( "DPanel", frame )
     LAMBDAPANELS:CreateLabel( "Entities", leftpnl, TOP )
     local scroll = LAMBDAPANELS:CreateScrollPanel( leftpnl )
@@ -95,4 +95,4 @@ local function OpenEntityPanel( ply )
     end )
 
 end
-RegisterLambdaPanel( "Entity Spawnlist", "Opens a panel that allows you to choose what Entities Lambdas are allowed to spawn. You must be a Super Admin to use this Panel.", OpenEntityPanel )
+RegisterLambdaPanel( "Entity Spawnlist", "设置允许 Lambda Player 生成的实体\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenEntityPanel )

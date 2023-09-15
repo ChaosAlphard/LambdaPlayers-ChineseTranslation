@@ -2,7 +2,7 @@ local function OpenPropPanel( ply )
     if !ply:IsSuperAdmin() then notification.AddLegacy( "You must be a Super Admin in order to use this!", 1, 4) surface.PlaySound( "buttons/button10.wav" ) return end
 
     local frame = LAMBDAPANELS:CreateFrame( "Prop Panel", 800, 500 )
-    LAMBDAPANELS:CreateLabel( "Click on models from the browser on the left to register them. Right click a row on the right to remove it", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "左键添加，右键移除", frame, TOP )
     local clearprops = vgui.Create( "DButton", frame )
     local resettodefault = vgui.Create( "DButton", frame )
     local filebrowser = vgui.Create( "DFileBrowser", frame )
@@ -111,4 +111,4 @@ local function OpenPropPanel( ply )
     end )
 
 end
-RegisterLambdaPanel( "Prop Spawnlist", "Opens a panel that allows you to choose what props Lambdas are allowed to spawn. You must be a Super Admin to use this Panel. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES!", OpenPropPanel )
+RegisterLambdaPanel( "Prop Spawnlist", "设置允许 Lambda Player 生成的道具\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenPropPanel )

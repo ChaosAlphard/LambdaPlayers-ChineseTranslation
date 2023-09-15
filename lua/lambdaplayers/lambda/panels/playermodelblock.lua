@@ -2,7 +2,7 @@ local function OpenPlayermodelBlockPanel( ply )
     if !ply:IsSuperAdmin() then notification.AddLegacy( "You must be a Super Admin in order to use this!", 1, 4) surface.PlaySound( "buttons/button10.wav" ) return end
 
     local frame = LAMBDAPANELS:CreateFrame( "Playermodel Blocking", 600, 500 )
-    LAMBDAPANELS:CreateLabel( "Click on playermodels to the left to block them. Right click a row on the right to unblock a model", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "左键添加，右键移除", frame, TOP )
     local leftpnl = vgui.Create( "DPanel", frame )
     local rightpnl = vgui.Create( "DPanel", frame )
     local playermodelscroll = LAMBDAPANELS:CreateScrollPanel( leftpnl, false, FILL )
@@ -67,4 +67,4 @@ local function OpenPlayermodelBlockPanel( ply )
 
 
 end
-RegisterLambdaPanel( "Playermodel Blacklist", "Opens a panel that allows you to prevent Lambdas from using certain playermodels. You must be a Super Admin to use this Panel. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES!", OpenPlayermodelBlockPanel )
+RegisterLambdaPanel( "Playermodel Blacklist", "设置禁止 Lambda Player 使用的玩家模型(Playermodel)\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenPlayermodelBlockPanel )

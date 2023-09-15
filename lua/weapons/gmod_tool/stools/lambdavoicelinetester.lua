@@ -8,13 +8,13 @@ TOOL.Information = {
     { name = "right" },
 }
 
-    
+
 language.Add("tool.lambdavoicelinetester", "Voice Line Tester")
 
-language.Add("tool.lambdavoicelinetester.name", "Voice Line Tester")
-language.Add("tool.lambdavoicelinetester.desc", "Forces Lambda Players to say certain voice lines" )
-language.Add("tool.lambdavoicelinetester.left", "Fire onto a Lambda Player to force them to speak a voice type. See the tool's settings" )
-language.Add("tool.lambdavoicelinetester.right", "Fire onto a Lambda Player to force them to say a specific sound file. See the tool's settings" )
+language.Add("tool.lambdavoicelinetester.name", "语音测试工具")
+language.Add("tool.lambdavoicelinetester.desc", "强制LambdaPlayer播放语音" )
+language.Add("tool.lambdavoicelinetester.left", "强制LambdaPlayer播放菜单中指定类型的语音" )
+language.Add("tool.lambdavoicelinetester.right", "强制LambdaPlayer播放菜单中指定路径的语言文件" )
 
 end
 
@@ -60,9 +60,9 @@ function TOOL.BuildCPanel( pnl )
         box:AddChoice( k, k )
     end
 
-    pnl:ControlHelp( "The Voice Type to test with Left Click" )
+    pnl:ControlHelp( "使用工具左键点击时要播放的语音类型\nidle：闲逛时的语音\ntaunt：挑衅时的语音\ndeath：死亡时的语音\nkill：击杀时的语音\nlaugh：嘲笑时的语音\nfall：摔落时的语音\nassist：助攻时的语音\nwitness：目击其他LambdaPlayer被杀死时的语音\npanic：恐慌时的语音" )
 
     pnl:TextEntry( "Sound Path", "lambdavoicelinetester_voicelinepath" )
-    pnl:ControlHelp( "The Sound File to test with Right Click" )
+    pnl:ControlHelp( "使用工具右键点击时要播放的语音文件的路径" )
 
 end

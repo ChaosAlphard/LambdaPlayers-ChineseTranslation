@@ -707,7 +707,20 @@ end
 
 function RegisterLambdaPanel( name, desc, func )
     local cmdName = ( string_lower( string_Replace( name, " ", "" ) ) )
-    CreateLambdaConsoleCommand( "lambdaplayers_panels_open" .. cmdName .. "panel", func, true, desc, { name = "Open " .. name .. " Panel", category = "Panels" } )
+    local panelNameTransMap = {
+        ["Birthday"] = "生日",
+        ["Entity Spawnlist"] = "实体生成列表",
+        ["DEV Kill Icon Maker"] = "击杀图标制作面板",
+        ["Playermodel Voice Profile"] = "玩家模型语音配置",
+        ["Lambda Names"] = "LambdaPlayer名称",
+        ["NPC Spawnlist"] = "NPC生成列表",
+        ["Playermodel Blacklist"] = "玩家模型黑名单",
+        ["Lambda Profiles"] = "LambdaPlayer人物配置",
+        ["Prop Spawnlist"] = "道具生成列表",
+        ["Text Lines"] = "聊天文本配置"
+    }
+    local transPanel = panelNameTransMap[name] or name
+    CreateLambdaConsoleCommand( "lambdaplayers_panels_open" .. cmdName .. "panel", func, true, desc, { name = transPanel .. "面板", category = "Panels" } )
 end
 
 local panels = file.Find( "lambdaplayers/lambda/panels/*", "LUA", "nameasc" )

@@ -27,15 +27,15 @@ end
 local function OpenProfilePanel( ply )
     if !IsValid( ply ) then return end
 
-    local frame = LAMBDAPANELS:CreateFrame( "Profile Editor", 700, 350 )
+    local frame = LAMBDAPANELS:CreateFrame( "Profile Editor", 1280, 800 )
 
     function frame:OnClose()
         chat.AddText( "Remember to Update Lambda Data after any changes!" )
         if IsValid( self._pfpframe ) then self._pfpframe:Remove() end
     end
 
-    
-    LAMBDAPANELS:CreateURLLabel( "Click here to learn on how to use this panel!", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#lambda-profiles", frame, TOP )
+
+    LAMBDAPANELS:CreateURLLabel( "点击这里了解如何使用", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#lambda-profiles", frame, TOP )
 
     -- Profile Listing and buttons --
     local rightpanel = LAMBDAPANELS:CreateBasicPanel( frame )
@@ -60,7 +60,7 @@ local function OpenProfilePanel( ply )
 
     if localprofiles then
         for k, v in SortedPairs( localprofiles ) do
-            local line =  profilelist:AddLine( k .. " | Local" )
+            local line =  profilelist:AddLine( "[本地]" .. k )
             line.l_isprofilelocal = true
             line:SetSortValue( 1, v )
         end
@@ -76,7 +76,7 @@ local function OpenProfilePanel( ply )
             if info.name == profilename then v:SetSortValue( 1, newinfo ) return end
         end
 
-        local line =  profilelist:AddLine( newinfo.name .. ( islocal and " | Local" or " | SERVER" ) )
+        local line =  profilelist:AddLine( ( islocal and "[本地]" or "[服务器]" ) .. newinfo.name )
         line.l_isprofilelocal = islocal
         line:SetSortValue( 1, newinfo )
     end
@@ -93,14 +93,14 @@ local function OpenProfilePanel( ply )
 
         conmenu:AddOption( "Cancel", function() end )
         conmenu:AddOption( "Delete " .. info.name .. "?", function()
-            
+
             if line.l_isprofilelocal then
                 LAMBDAFS:RemoveVarFromKVFile( "lambdaplayers/profiles.json", info.name, "json" )
                 surface.PlaySound( "buttons/button15.wav" )
                 chat.AddText( "Deleted " .. info.name .. " from your Profiles")
                 profilelist:RemoveLine( id )
             else
-                LAMBDAPANELS:RemoveVarFromKVFile( "lambdaplayers/profiles.json", info.name, "json" ) 
+                LAMBDAPANELS:RemoveVarFromKVFile( "lambdaplayers/profiles.json", info.name, "json" )
                 surface.PlaySound( "buttons/button15.wav" )
                 chat.AddText( "Deleted " .. info.name .. " from the Server's Profiles")
                 profilelist:RemoveLine( id )
@@ -108,7 +108,7 @@ local function OpenProfilePanel( ply )
         end )
     end
 
-    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "Save Profile", function()
+    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "保存配置文件", function()
         local compiledinfo = CompileSettings()
 
         chat.AddText( "Saved " .. compiledinfo.name .. " to your Profiles!" )
@@ -116,7 +116,7 @@ local function OpenProfilePanel( ply )
 
         UpdateprofileLine( compiledinfo.name, compiledinfo, true )
         if !LAMBDAFS:FileHasValue( "lambdaplayers/customnames.json", compiledinfo.name, "json" ) then LAMBDAFS:UpdateSequentialFile( "lambdaplayers/customnames.json", compiledinfo.name, "json" )  end
-        LAMBDAFS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ compiledinfo.name ] = compiledinfo }, "json" ) 
+        LAMBDAFS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ compiledinfo.name ] = compiledinfo }, "json" )
     end )
 
     if !game.SinglePlayer() then
@@ -127,17 +127,17 @@ local function OpenProfilePanel( ply )
             surface.PlaySound( "buttons/button15.wav" )
             chat.AddText( "Saved " .. compiledinfo.name .. " to the Server's Profiles. Make sure the name exists in the Server's names by using the Name Panel")
 
-            local line =  profilelist:AddLine( compiledinfo.name .. " | Server" )
+            local line =  profilelist:AddLine( "[服务器]" .. compiledinfo.name )
             line.l_isprofilelocal = false
             line:SetSortValue( 1, compiledinfo )
             if LocalPlayer():GetNW2Bool( "lambda_serverhost", false ) and !LAMBDAFS:FileHasValue( "lambdaplayers/customnames.json", compiledinfo.name, "json" ) then LAMBDAFS:UpdateSequentialFile( "lambdaplayers/customnames.json", compiledinfo.name, "json" ) end
 
             UpdateprofileLine( compiledinfo.name, compiledinfo, true )
-            LAMBDAPANELS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ compiledinfo.name ] = compiledinfo }, "json" ) 
+            LAMBDAPANELS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ compiledinfo.name ] = compiledinfo }, "json" )
         end )
     end
 
-    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "Request Server Profiles", function()
+    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "请求服务端配置文件", function()
         if LocalPlayer():GetNW2Bool( "lambda_serverhost", false ) then chat.AddText( "You are the server host!" ) return end
         if !LocalPlayer():IsSuperAdmin() then chat.AddText( "You must be a Super Admin to request the Server's Profiles!" ) return end
         LAMBDAPANELS:RequestDataFromServer( "lambdaplayers/profiles.json", "json", function( data )
@@ -146,9 +146,9 @@ local function OpenProfilePanel( ply )
             profilelist:Clear()
             table_Empty( profiles )
             table_Merge( profiles, data )
-            
+
             for k, v in SortedPairs( data ) do
-                local line =  profilelist:AddLine( k .. " | SERVER" )
+                local line =  profilelist:AddLine( "[服务器]" .. k )
                 line.l_isprofilelocal = false
                 line:SetSortValue( 1, v )
             end
@@ -156,11 +156,11 @@ local function OpenProfilePanel( ply )
     end )
 
 
-    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "Validate Profiles", function()
+    LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "校验配置文件", function()
 
         local hasissue = false
         for k, v in pairs( profiles ) do
-            
+
             if v.model and !file.Exists( v.model, "GAME" ) then hasissue = true print( "Lambda Profile Validate: " .. k .. " has a error playermodel! ( " .. v.model .. " )" ) end
             if v.voiceprofile and !file.Exists( "sound/lambdaplayers/voiceprofiles/" .. v.voiceprofile, "GAME" ) and !file.Exists( "sound/zetaplayer/custom_vo/" .. v.voiceprofile, "GAME" ) then hasissue = true print( "Lambda Profile Validate: " .. k .. " has a non existent Voice Profile! ( " .. v.voiceprofile .. " )" ) end
             if v.spawnwep and !_LAMBDAPLAYERSWEAPONS[ v.spawnwep ] then hasissue = true print( "Lambda Profile Validate: " .. k .. " has a non existent Spawn Weapon! ( " .. v.spawnwep .. " )" ) end
@@ -175,20 +175,20 @@ local function OpenProfilePanel( ply )
 
 --[[     LAMBDAPANELS:CreateButton( rightpanel, BOTTOM, "Import Zeta Profiles", function()
         Derma_Query( "Are you sure you want to import your Zeta Profiles? Note that the importing will not be perfect and you may have to edit the profiles!", "CONFIRMATION:", "Yes", function()
-            
+
             if file.Exists( "zetaplayerdata/profiles.json", "DATA" ) then
                 local zetaprofiles = LAMBDAFS:ReadFile( "zetaplayerdata/profiles.json", "json" )
 
                 for key, profiletbl in pairs( zetaprofiles ) do
-                    
+
                     local translationinfo = {
                         name = profiletbl.name,
                         model = profiletbl.playermodel and profiletbl.playermodel or nil,
                         profilepicture = profiletbl.avatar and "lambdaplayers/custom_profilepictures/" .. profiletbl.avatar or nil,
 
-                        plycolor = profiletbl.playermodelcolor and Vector( profiletbl.playermodelcolor.r / 255, profiletbl.playermodelcolor.g / 255, profiletbl.playermodelcolor.b / 255  ) or Vector( 1, 1, 1), 
+                        plycolor = profiletbl.playermodelcolor and Vector( profiletbl.playermodelcolor.r / 255, profiletbl.playermodelcolor.g / 255, profiletbl.playermodelcolor.b / 255  ) or Vector( 1, 1, 1),
                         physcolor = profiletbl.physguncolor and Vector( profiletbl.physguncolor.r / 255, profiletbl.physguncolor.g / 255, profiletbl.physguncolor.b / 255  ) or Vector( 1, 1, 1 ),
-            
+
                         voicepitch = profiletbl.voicepitch and round( profiletbl.voicepitch, 0 ) or 100,
                         voice = profiletbl.personality and round( profiletbl.personality.voice, 0 ) or 30,
                         voiceprofile = profiletbl.voicepack or nil,
@@ -206,7 +206,7 @@ local function OpenProfilePanel( ply )
                     line.l_isprofilelocal = false
                     line:SetSortValue( 1, translationinfo )
 
-                    LAMBDAFS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ translationinfo.name ] = translationinfo }, "json" ) 
+                    LAMBDAFS:UpdateKeyValueFile( "lambdaplayers/profiles.json", { [ translationinfo.name ] = translationinfo }, "json" )
                 end
 
                 chat.AddText( "Imported all Zeta Profiles to Lambda successfully!" )
@@ -214,7 +214,7 @@ local function OpenProfilePanel( ply )
                 Derma_Message( "There are no profiles to import", "Import Failed", "Ok")
             end
 
-        
+
         end, "No")
     end ) ]]
 
@@ -232,60 +232,59 @@ local function OpenProfilePanel( ply )
 
     local mainscroll = LAMBDAPANELS:CreateScrollPanel( mainpanel, false, FILL )
 
-    LAMBDAPANELS:CreateLabel( "Lambda Name", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer的名称", mainscroll, TOP )
     local name = LAMBDAPANELS:CreateTextEntry( mainscroll, TOP, "Enter a name here" )
 
-    LAMBDAPANELS:CreateLabel( "Player Model", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "Leave blank for random", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer使用的玩家模型", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "留空表示随机", mainscroll, TOP )
     local model = LAMBDAPANELS:CreateTextEntry( mainscroll, TOP, "Enter a model path" )
 
-    LAMBDAPANELS:CreateLabel( "Profile Picture", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "Enter a file path relative to", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer资料图片", mainscroll, TOP )
     LAMBDAPANELS:CreateLabel( "materials/lambdaplayers/custom_profilepictures", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "Leave Blank for random", mainscroll, TOP )
-    LAMBDAPANELS:CreateURLLabel( "Click here to learn about Profile Pictures", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#profile-pictures", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "输入文件相对路径，留空表示随机", mainscroll, TOP )
+    LAMBDAPANELS:CreateURLLabel( "点击这里了解更多相关信息", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#profile-pictures", mainscroll, TOP )
     local profilepicture = LAMBDAPANELS:CreateTextEntry( mainscroll, TOP, "Enter a file path" )
 
-    LAMBDAPANELS:CreateButton( mainscroll, TOP, "Profile Picture Menu", function()
+    LAMBDAPANELS:CreateButton( mainscroll, TOP, "LambdaPlayer资料图片菜单", function()
 
         local pfpframe = LAMBDAPANELS:CreateFrame( "Profile Picture Menu", 250, 400 )
         frame._pfpframe = pfpframe
-        local lbl = LAMBDAPANELS:CreateLabel( "Click on a image to set it as the profile picture.\nScanning Profile Pictures..", pfpframe, TOP )
+        local lbl = LAMBDAPANELS:CreateLabel( "点击一个图片以将其设置为LambdaPlayer资料图片\nScanning Profile Pictures..", pfpframe, TOP )
         lbl:SetSize( 100, 60 )
         lbl:SetWrap( true )
-        lbl:Dock( TOP ) 
+        lbl:Dock( TOP )
         local scroll = LAMBDAPANELS:CreateScrollPanel( pfpframe, false, FILL )
 
-        local filecount = 0 
+        local filecount = 0
         local checkedcount = 0
-    
+
         local function RecursiveFindNum( dir )
             local files, dirs = file.Find( dir .. "/*", "GAME", "datedesc" )
             filecount = filecount + #files
             for k, v in ipairs( dirs ) do if !IsValid( pfpframe ) then return end RecursiveFindNum( dir .. "/" .. v ) end
             coroutine.wait( 0.5 )
         end
-    
-    
+
+
         local function RecursiveFind( dir )
-    
+
             local files, dirs = file.Find( dir .. "/*", "GAME", "datedesc" )
-    
-            for k, v in ipairs( files ) do  
+
+            for k, v in ipairs( files ) do
                 if !IsValid( pfpframe ) then return end
-    
+
                 checkedcount = checkedcount + 1
-    
-                lbl:SetText( "Click on a image to set it as the profile picture.\nImporting Profile Pictures.. " .. ( math.Round( math.Remap( checkedcount, 0, filecount, 0, 100 ), 0 ) ) .. "% imported"  )
-            
-    
+
+                lbl:SetText( "点击一个图片以将其设置为LambdaPlayer资料图片\nImporting Profile Pictures.. " .. ( math.Round( math.Remap( checkedcount, 0, filecount, 0, 100 ), 0 ) ) .. "% imported"  )
+
+
                 local isVTF = string.EndsWith( string.Replace( dir .. "/" .. v, "materials/", "" ), ".vtf" ) -- If the file is a VTF
                 local material
-            
+
                 if isVTF then
                     _LambdaPfpIndex = _LambdaPfpIndex or 0
                     _LambdaPfpIndex = _LambdaPfpIndex + 1
-    
+
                     material = CreateMaterial( "lambdaprofilepanelVTFmaterial" .. _LambdaPfpIndex, "UnlitGeneric", {
                         [ "$basetexture" ] = string.Replace( dir .. "/" .. v, "materials/", "" ),
                         [ "$translucent" ] = 1,
@@ -300,20 +299,20 @@ local function OpenProfilePanel( ply )
                 else
                     material = Material( string.Replace( dir .. "/" .. v, "materials/", "" ) )
                 end
-    
+
                 local image = vgui.Create( "DImageButton", scroll )
                 image:SetSize( 300, 300 )
                 image:Dock( TOP )
                 image:SetMaterial( material )
-    
+
                 function image:DoClick()
                     profilepicture:SetText( string.Replace( dir .. "/" .. v, "materials/lambdaplayers/custom_profilepictures/", "" ) )
-                    profilepicture:OnChange() 
+                    profilepicture:OnChange()
                 end
-    
+
                 coroutine.wait( 0.05 )
             end
-    
+
             for k, v in ipairs( dirs ) do if !IsValid( pfpframe ) then return end RecursiveFind( dir .. "/" .. v ) end
         end
 
@@ -321,21 +320,21 @@ local function OpenProfilePanel( ply )
             RecursiveFindNum( "materials/lambdaplayers/custom_profilepictures" )
             RecursiveFind( "materials/lambdaplayers/custom_profilepictures" )
             if !IsValid( lbl ) then return end
-            lbl:SetText( "Click on a image to set it as the profile picture.\nFinished!"  )
+            lbl:SetText( "点击一个图片以将其设置为LambdaPlayer资料图片\nFinished!"  )
         end )
 
     end )
 
     local pfppreview = vgui.Create( "DImage", mainscroll )
     pfppreview:SetSize( 100, 150 )
-    pfppreview:Dock( TOP ) 
+    pfppreview:Dock( TOP )
 
-    function profilepicture:OnChange() 
+    function profilepicture:OnChange()
         local text = profilepicture:GetText()
-        if file.Exists( "materials/lambdaplayers/custom_profilepictures/" .. text, "GAME" ) then 
+        if file.Exists( "materials/lambdaplayers/custom_profilepictures/" .. text, "GAME" ) then
             local isVTF = string.EndsWith( "lambdaplayers/custom_profilepictures/" .. text, ".vtf" )
             local material
-        
+
             if isVTF then
                 _LambdaPfpIndex = _LambdaPfpIndex or 0
                 _LambdaPfpIndex = _LambdaPfpIndex + 1
@@ -354,14 +353,14 @@ local function OpenProfilePanel( ply )
             else
                 material = Material( "lambdaplayers/custom_profilepictures/" .. text )
             end
-            pfppreview:SetMaterial( material ) 
+            pfppreview:SetMaterial( material )
         end
     end
 
 
 
-    LAMBDAPANELS:CreateLabel( "Voice Profile", mainscroll, TOP )
-    LAMBDAPANELS:CreateURLLabel( "Click here to learn about Voice Profiles", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#voice-profiles", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "语音配置文件", mainscroll, TOP )
+    LAMBDAPANELS:CreateURLLabel( "点击这里了解更多相关信息", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#voice-profiles", mainscroll, TOP )
     local combotable = {}
 
     for k, v in pairs( LambdaVoiceProfiles ) do
@@ -374,8 +373,8 @@ local function OpenProfilePanel( ply )
     local voiceprofile = LAMBDAPANELS:CreateComboBox( mainscroll, TOP, combotable )
 
 
-    LAMBDAPANELS:CreateLabel( "Text Profile", mainscroll, TOP )
-    LAMBDAPANELS:CreateURLLabel( "Click here to learn about Text Profiles", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#text-profiles", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "聊天配置文件", mainscroll, TOP )
+    LAMBDAPANELS:CreateURLLabel( "点击这里了解更多相关信息", "https://github.com/IcyStarFrost/Lambda-Players/wiki/Adding-Custom-Content#text-profiles", mainscroll, TOP )
 
     local textcombotable = {}
     for k, v in pairs( LAMBDAFS:GetTextProfiles() ) do
@@ -384,26 +383,26 @@ local function OpenProfilePanel( ply )
     textcombotable[ "No Text Profile" ] = "/NIL"
     local textprofile = LAMBDAPANELS:CreateComboBox( mainscroll, TOP, textcombotable )
 
-    LAMBDAPANELS:CreateLabel( "Voice Pitch", mainscroll, TOP )
-    local voicepitch = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "Voice Pitch", 30, 255, 0 )
+    -- LAMBDAPANELS:CreateLabel( "", mainscroll, TOP )
+    local voicepitch = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "音调", 30, 255, 0 )
 
-    LAMBDAPANELS:CreateLabel( "Spawn Weapon", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "The weapon to spawn with", mainscroll, TOP )
+    -- LAMBDAPANELS:CreateLabel( "自带武器", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "生成时的自带武器", mainscroll, TOP )
     local copy = table_Copy( _LAMBDAWEAPONCLASSANDPRINTS )
     copy[ "No Weapon" ] = "/NIL"
     local spawnweapon = LAMBDAPANELS:CreateComboBox( mainscroll, TOP, copy )
 
-    LAMBDAPANELS:CreateLabel( "Ping", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "The lowest point this Lambda's Ping can get", mainscroll, TOP )
-    local pingrange = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "Ping Range", 1, 130, 0 )
+    -- LAMBDAPANELS:CreateLabel( "", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer的最低Ping值范围", mainscroll, TOP )
+    local pingrange = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "Ping范围", 1, 130, 0 )
 
-    LAMBDAPANELS:CreateLabel( "Health", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "The Health this Lambda will have", mainscroll, TOP )
-    local health = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "Health", 1, 10000, 0 )
+    -- LAMBDAPANELS:CreateLabel( "血量", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer生成时的血量", mainscroll, TOP )
+    local health = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 100, "血量", 1, 10000, 0 )
 
-    LAMBDAPANELS:CreateLabel( "Armor", mainscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "The Armor amount this Lambda will have", mainscroll, TOP )
-    local armor = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 0, "Armor", 0, 255, 0 )
+    -- LAMBDAPANELS:CreateLabel( "护甲", mainscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "LambdaPlayer生成时的护甲", mainscroll, TOP )
+    local armor = LAMBDAPANELS:CreateNumSlider( mainscroll, TOP, 0, "护甲", 0, 255, 0 )
 
     ---- ---- ---- ---- ---- ----
 
@@ -414,8 +413,8 @@ local function OpenProfilePanel( ply )
     main2panel:Dock( LEFT )
     scroll:AddPanel( main2panel )
 
-    LAMBDAPANELS:CreateLabel( "-- Easy Playermodel Selections --", main2panel, TOP )
-    LAMBDAPANELS:CreateLabel( "Click on a model to easily use it", main2panel, TOP )
+    LAMBDAPANELS:CreateLabel( "-- 选择LambdaPlayer使用的模型 --", main2panel, TOP )
+    LAMBDAPANELS:CreateLabel( "左键选择", main2panel, TOP )
     local main2scroll = LAMBDAPANELS:CreateScrollPanel( main2panel, false, FILL )
 
     local List = vgui.Create( "DIconLayout", main2scroll )
@@ -426,7 +425,7 @@ local function OpenProfilePanel( ply )
     for k, v in SortedPairs( player_manager.AllValidModels() ) do
         local mdlbutton = List:Add( "SpawnIcon" )
         mdlbutton:SetModel( v )
-        
+
         function mdlbutton:DoClick()
             model:SetText( mdlbutton:GetModelName() )
             model:OnChange()
@@ -457,7 +456,7 @@ local function OpenProfilePanel( ply )
         self:GetEntity().GetPlayerColor = function() return vector end
     end
 
-    function model:OnChange() 
+    function model:OnChange()
         playermodelpreview:SetModel( model:GetText() != "" and model:GetText() or "models/error.mdl" )
         if isfunction( UpdateSBSliders ) then UpdateSBSliders() end
     end
@@ -476,18 +475,25 @@ local function OpenProfilePanel( ply )
 
 
     local personalityscroll = LAMBDAPANELS:CreateScrollPanel( personalitypanel, false, FILL )
-    LAMBDAPANELS:CreateLabel( "-- Personality Settings --", personalityscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "If this Profile should", personalityscroll, TOP )
-    LAMBDAPANELS:CreateLabel( "use these sliders", personalityscroll, TOP )
-    local usepersonality = LAMBDAPANELS:CreateCheckBox( personalityscroll, TOP, true, "Use Personality Slider" )
+    LAMBDAPANELS:CreateLabel( "-- LambdaPlayer性格设置 --", personalityscroll, TOP )
+    LAMBDAPANELS:CreateLabel( "是否使用性格滑块来设置性格", personalityscroll, TOP )
+    -- LAMBDAPANELS:CreateLabel( "use these sliders", personalityscroll, TOP )
+    local usepersonality = LAMBDAPANELS:CreateCheckBox( personalityscroll, TOP, true, "启用性格滑块" )
 
-    for k, v in ipairs( LambdaPersonalities ) do 
-        local numslider = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, v[ 1 ], 0, 100, 0 )
+    local personalityTransMap = {
+        ["Build"] = "建造",
+        ["Tool"] = "工具枪",
+        ["Combat"] = "战斗",
+        ["Friendly"] = "友好"
+    }
+    for k, v in ipairs( LambdaPersonalities ) do
+        local personalityTransVal = personalityTransMap[v[1]] or v[1]
+        local numslider = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, personalityTransVal, 0, 100, 0 )
         personalitysliders[ v[ 1 ] ] = numslider
     end
 
-    local voicechance = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, "Voice", 0, 100, 0 )
-    local textchance = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, "Text", 0, 100, 0 )
+    local voicechance = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, "语音", 0, 100, 0 )
+    local textchance = LAMBDAPANELS:CreateNumSlider( personalityscroll, TOP, 30, "聊天", 0, 100, 0 )
     ---- ---- ---- ---- ---- ----
 
 
@@ -499,10 +505,10 @@ local function OpenProfilePanel( ply )
 
     local colorscroll = LAMBDAPANELS:CreateScrollPanel( colorframe, false, FILL )
 
-    
 
-    LAMBDAPANELS:CreateLabel( "-- Playermodel Color --", colorscroll, TOP )
-    local useplycolor = LAMBDAPANELS:CreateCheckBox( colorscroll, TOP, true, "Use Playermodel Color" )
+
+    LAMBDAPANELS:CreateLabel( "-- 玩家模型颜色 --", colorscroll, TOP )
+    local useplycolor = LAMBDAPANELS:CreateCheckBox( colorscroll, TOP, true, "使用玩家模型颜色" )
     local playermodelcolor = LAMBDAPANELS:CreateColorMixer( colorscroll, TOP )
 
     function playermodelcolor:ValueChanged( col )
@@ -510,8 +516,8 @@ local function OpenProfilePanel( ply )
     end
 
 
-    LAMBDAPANELS:CreateLabel( "-- Physgun Color --", colorscroll, TOP )
-    local usephyscolor = LAMBDAPANELS:CreateCheckBox( colorscroll, TOP, true, "Use Physgun Color" )
+    LAMBDAPANELS:CreateLabel( "-- 物理枪颜色 --", colorscroll, TOP )
+    local usephyscolor = LAMBDAPANELS:CreateCheckBox( colorscroll, TOP, true, "使用物理枪颜色" )
     local physguncolor = LAMBDAPANELS:CreateColorMixer( colorscroll, TOP )
     ---- ---- ---- ---- ---- ----
 
@@ -524,10 +530,10 @@ local function OpenProfilePanel( ply )
     sbframe:Dock( LEFT )
     scroll:AddPanel( sbframe )
 
-    LAMBDAPANELS:CreateLabel( "-- BodyGroups/Skins --", sbframe, TOP )
+    LAMBDAPANELS:CreateLabel( "-- 皮肤与身体组件 --", sbframe, TOP )
 
     local sbscroll = LAMBDAPANELS:CreateScrollPanel( sbframe, false, FILL )
-    
+
 
     UpdateSBSliders = function()
         local ent = playermodelpreview:GetEntity()
@@ -540,10 +546,10 @@ local function OpenProfilePanel( ply )
         function skinslider:OnValueChanged( val ) ent:SetSkin( round( val, 0 ) ) end
 
         local groups = ent:GetBodyGroups() or {}
-        
+
         for _, v in ipairs( groups ) do
             local smds = #v.submodels
-            if smds == 0 then continue end 
+            if smds == 0 then continue end
 
             local bgslider = LAMBDAPANELS:CreateNumSlider( sbscroll, TOP, 0, MakeNiceName( v.name ), 0, smds, 0 )
 
@@ -574,7 +580,7 @@ local function OpenProfilePanel( ply )
             externalpanel:SetSize( 200, 200 )
             externalpanel:Dock( LEFT )
             scroll:AddPanel( externalpanel )
-        
+
             externalscroll = LAMBDAPANELS:CreateScrollPanel( externalpanel, false, FILL )
             LAMBDAPANELS:CreateLabel( "-- " .. category .. " --", externalscroll, TOP )
 
@@ -588,7 +594,7 @@ local function OpenProfilePanel( ply )
         extpnl.LambdapnlClass = class
         externalpanels[ variablename ] = extpnl
         callback( extpnl, categories[ category ] )
-        
+
 
     end
     ---- ---- ---- ---- ---- ----
@@ -597,7 +603,7 @@ local function OpenProfilePanel( ply )
         if name:GetText() == "" then chat.AddText( "No name is set!" ) return end
         local _, vp = voiceprofile:GetSelected()
         local _, tp = textprofile:GetSelected()
-        
+
         local _, weapon = spawnweapon:GetSelected()
         local infotable = {
 
@@ -607,9 +613,9 @@ local function OpenProfilePanel( ply )
 
             plycolor = useplycolor:GetChecked() and playermodelcolor:GetVector() or nil,
             physcolor = usephyscolor:GetChecked() and physguncolor:GetVector() or nil,
-            
+
             mdlSkin = round( skinslider:GetValue(), 0 ),
-            
+
             voicepitch = round( voicepitch:GetValue(), 0 ),
             voice = usepersonality:GetChecked() and round( voicechance:GetValue(), 0 ) or nil,
             text = usepersonality:GetChecked() and round( textchance:GetValue(), 0 ) or nil,
@@ -652,7 +658,7 @@ local function OpenProfilePanel( ply )
     ImportProfile = function( infotable )
         local ent = playermodelpreview:GetEntity()
         profileinfo = infotable
-        
+
         name:SetText( infotable.name )
         model:SetText( infotable.model or "" )
 
@@ -663,7 +669,7 @@ local function OpenProfilePanel( ply )
         else
             profilepicture:SetText( "" )
         end
-        
+
         useplycolor:SetChecked( infotable.plycolor != nil )
         usephyscolor:SetChecked( infotable.physcolor != nil )
         playermodelcolor:SetVector( infotable.plycolor or Vector( 1, 1, 1 ) )
@@ -691,7 +697,7 @@ local function OpenProfilePanel( ply )
         textchance:SetValue( infotable.text or 30 )
         if infotable.voiceprofile then voiceprofile:SelectOptionByKey( infotable.voiceprofile ) else voiceprofile:SelectOptionByKey( "/NIL" ) end
         if infotable.textprofile then textprofile:SelectOptionByKey( infotable.textprofile ) else textprofile:SelectOptionByKey( "/NIL" ) end
-        
+
         pingrange:SetValue( infotable.pingrange )
 
         if infotable.spawnwep then spawnweapon:SelectOptionByKey( infotable.spawnwep ) else spawnweapon:SelectOptionByKey( "/NIL" ) end
@@ -724,4 +730,4 @@ local function OpenProfilePanel( ply )
 
 end
 
-RegisterLambdaPanel( "Lambda Profiles", "Opens a panel that allows you to create profiles of specific names/Lambdas. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES!", OpenProfilePanel )
+RegisterLambdaPanel( "Lambda Profiles", "创建自定义 Lambda Player\n修改后需要更新Lambda数据", OpenProfilePanel )

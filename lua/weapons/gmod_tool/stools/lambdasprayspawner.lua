@@ -11,13 +11,13 @@ TOOL.ClientConVar = {
     [ "spraypath" ] = ""
 }
 
-    
+
 language.Add("tool.lambdasprayspawner", "Lambda Sprayer")
 
-language.Add("tool.lambdasprayspawner.name", "Lambda Sprayer")
-language.Add("tool.lambdasprayspawner.desc", "Creates Sprays" )
-language.Add("tool.lambdasprayspawner.left", "Fire onto a surface to spawn a random spray" )
-language.Add("tool.lambdasprayspawner.right", "Fire onto a surface to spawn a selected spray via spawn menu" )
+language.Add("tool.lambdasprayspawner.name", "LambdaPlayer喷漆工具")
+language.Add("tool.lambdasprayspawner.desc", "创建喷漆" )
+language.Add("tool.lambdasprayspawner.left", "生成随机喷漆" )
+language.Add("tool.lambdasprayspawner.right", "生成在喷漆工具菜单中选择的喷漆" )
 
 end
 
@@ -31,7 +31,7 @@ function TOOL:LeftClick( tr )
     local spray = LambdaPlayerSprays[ math.random( #LambdaPlayerSprays ) ]
     if !spray then self:GetOwner():ChatPrint( "You do not have any sprays loaded!" ) return end
     LambdaPlayers_Spray( spray, tr.HitPos, tr.HitNormal, math.random( 0, 10000000000 ) )
-   
+
     return true
 end
 
@@ -43,7 +43,7 @@ function TOOL:RightClick( tr )
     if val == "" then return end
 
     LambdaPlayers_Spray( val, tr.HitPos, tr.HitNormal, math.random( 0, 10000000000 ) )
-   
+
     return true
 end
 
@@ -52,7 +52,7 @@ local index = 0
 
 function TOOL.BuildCPanel( pnl )
 
-    local lbl = pnl:Help( "Click on a spray to select it then use right click any where on the world to paste it.\n\nScanning sprays.." )
+    local lbl = pnl:Help( "在这里选择喷漆工具右键生成的喷漆\n\nScanning sprays.." )
 
     local frame = vgui.Create( "DPanel", pnl )
     frame:SetSize( 300, 600 )
@@ -61,7 +61,7 @@ function TOOL.BuildCPanel( pnl )
     local scroll = vgui.Create( "DScrollPanel", frame )
     scroll:Dock( FILL )
 
-    local filecount = 0 
+    local filecount = 0
     local checkedcount = 0
 
     local function RecursiveFindNum( dir )
@@ -76,17 +76,17 @@ function TOOL.BuildCPanel( pnl )
 
         local files, dirs = file.Find( dir .. "/*", "GAME", "datedesc" )
 
-        for k, v in ipairs( files ) do  
+        for k, v in ipairs( files ) do
             if !IsValid( pnl ) then return end
 
             checkedcount = checkedcount + 1
 
             lbl:SetText( "Click on a spray to select it then use right click any where on the world to paste it.\n\nImporting Sprays.. " .. ( math.Round( math.Remap( checkedcount, 0, filecount, 0, 100 ), 0 ) ) .. "% imported"  )
-        
+
 
             local isVTF = string.EndsWith( string.Replace( dir .. "/" .. v, "materials/", "" ), ".vtf" ) -- If the file is a VTF
             local material
-        
+
             if isVTF then
                 index = index + 1
 

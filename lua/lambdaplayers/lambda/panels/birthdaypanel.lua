@@ -1,17 +1,17 @@
 local round = math.Round
 local months = {
-    [ "January" ] = "January",
-    [ "February"] =  "February",
-    [ "March" ] = "March",
-    [ "April" ] = "April",
-    [ "May" ] = "May",
-    [ "June" ] = "June",
-    [ "July" ] = "July",
-    [ "August" ] = "August",
-    [ "September" ] = "September",
-    [ "October" ] = "October",
-    [ "November" ] = "November",
-    [ "December" ] = "December"
+    [ "一月" ] = "January",
+    [ "二月"] =  "February",
+    [ "三月" ] = "March",
+    [ "四月" ] = "April",
+    [ "五月" ] = "May",
+    [ "六月" ] = "June",
+    [ "七月" ] = "July",
+    [ "八月" ] = "August",
+    [ "九月" ] = "September",
+    [ "十月" ] = "October",
+    [ "十一月" ] = "November",
+    [ "十二月" ] = "December"
 }
 
 local function OpenBirthdaypanel( ply )
@@ -47,4 +47,4 @@ local function OpenBirthdaypanel( ply )
         net.SendToServer()
     end
 end
-RegisterLambdaPanel( "Birthday", "Opens a panel that allows you to set your birthday so the Lambdas know when to mention your birthday", OpenBirthdaypanel )
+RegisterLambdaPanel( "Birthday", "设置你的生日", OpenBirthdaypanel )

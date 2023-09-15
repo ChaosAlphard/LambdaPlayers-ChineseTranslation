@@ -7,12 +7,12 @@ TOOL.Information = {
     { name = "left" },
 }
 
-    
+
 language.Add("tool.lambdaprofilespawner", "Lambda Profile Spawner")
 
-language.Add("tool.lambdaprofilespawner.name", "Lambda Profile Spawner")
-language.Add("tool.lambdaprofilespawner.desc", "Spawns a Lambda Player of the specified Profile" )
-language.Add("tool.lambdaprofilespawner.left", "Fire any where to spawn a Profile Lambda Player" )
+language.Add("tool.lambdaprofilespawner.name", "LambdaPlayer生成工具")
+language.Add("tool.lambdaprofilespawner.desc", "使用选择的人物配置生成LambdaPlayer" )
+language.Add("tool.lambdaprofilespawner.left", "生成一个LambdaPlayer" )
 
 end
 
@@ -41,7 +41,7 @@ function TOOL:LeftClick( tr )
             lambda:Spawn()
 
             lambda:SetRespawn( self:GetClientNumber( "respawn", 0 ) == 1 )
-        
+
             lambda:ApplyLambdaInfo( profileinfo )
             lambda:SimpleTimer( 0, function() LambdaRunHook( "LambdaOnProfileApplied", lambda, info ) end, true )
         else
@@ -49,17 +49,17 @@ function TOOL:LeftClick( tr )
         end
     end
 
-   
+
     return true
 end
 
 function TOOL.BuildCPanel( pnl )
-    pnl:Help( "NOTE: Profiles listed here are only found and loaded on your PC! This means some profiles will not work if the Server doesn't have it")
+    pnl:Help( "注意：这里列出的配置文件为当前客户端的本地文件，这意味着如果服务器没有对应的配置文件则不会生效")
 
-    pnl:CheckBox( "Respawn", "lambdaprofilespawner_respawn" )
-    pnl:ControlHelp( "If the Lambda spawned should be able to respawn" )
+    pnl:CheckBox( "重生", "lambdaprofilespawner_respawn" )
+    pnl:ControlHelp( "是否允许生成工具生成的LambdaPlayer在死后复活" )
 
-    local box = pnl:ComboBox( "Profile Name", "lambdaprofilespawner_profilename" )
+    local box = pnl:ComboBox( "人物名称", "lambdaprofilespawner_profilename" )
 
     if LambdaPersonalProfiles and !isempty( LambdaPersonalProfiles ) then
         for name, info in pairs( LambdaPersonalProfiles ) do
@@ -67,7 +67,7 @@ function TOOL.BuildCPanel( pnl )
         end
     end
 
-    pnl:ControlHelp( "The Profile to spawn with Left Click" )
+    pnl:ControlHelp( "要生成的LambdaPlayer的名称" )
 
     local update = vgui.Create( "DButton", pnl )
     update:SetText( "Update Profile List" )

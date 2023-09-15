@@ -1,10 +1,10 @@
-local enabled = CreateLambdaConvar( "lambdaplayers_mws_enabled", 0, true, false, false, "If Lambda Players should spawn naturally via MWS (Map Wide Spawning)", 0, 1, { type = "Bool", name = "Enable MWS", category = "MWS"} )
-local maxlambdacount = CreateLambdaConvar( "lambdaplayers_mws_maxlambdas", 5, true, false, false, "The amount of natural Lambdas can be spawned at once", 1, 500, { type = "Slider", decimals = 0, name = "Max Lambda Count", category = "MWS"} )
-local spawnrate = CreateLambdaConvar( "lambdaplayers_mws_spawnrate", 2, true, false, false, "Time in seconds before each Lambda Player is spawned", 0.1, 500, { type = "Slider", decimals = 1, name = "Spawn Rate", category = "MWS"} )
-local randomspawnrate = CreateLambdaConvar( "lambdaplayers_mws_randomspawnrate", 0, true, false, false, "If the spawn rate should be randomized between 0.1 and what ever Spawn Rate is set to", 0, 1, { type = "Bool", name = "Randomized Spawn Rate", category = "MWS"} )
-local respawn = CreateLambdaConvar( "lambdaplayers_mws_respawning", 1, true, false, false, "If Lambda Players spawned by MWS should respawn", 0, 1, { type = "Bool", name = "Respawn", category = "MWS"} )
-local navmeshspawning = CreateLambdaConvar( "lambdaplayers_mws_spawnonnavmesh", 1, true, false, false, "If Lambda Players spawned by MWS should spawn randomly on the map using the navmesh. Remember that the (Respawn At Player Spawns) option in Lambda Server Settings will make them respawn at player spawn points", 0, 1, { type = "Bool", name = "Random Navmesh Spawn Points", category = "MWS"} )
-local navmeshspawndist = CreateLambdaConvar( "lambdaplayers_mws_navmeshspawndist", 0, true, false, false, "If (Random Navmesh Spawn Points) is enabled, sets the limit in what distance should the real player be from the area Lambda Player can spawn in. Set to zero for unlimited spawn distance", 0, 10000, { type = "Slider", decimals = 0, name = "Navmesh Spawn Distance Limit", category = "MWS"} )
+local enabled = CreateLambdaConvar( "lambdaplayers_mws_enabled", 0, true, false, false, "允许 Lambda Player 通过 MWS(Map Wide Spawning) 在地图上自然生成", 0, 1, { type = "Bool", name = "启用MWS", category = "MWS"} )
+local maxlambdacount = CreateLambdaConvar( "lambdaplayers_mws_maxlambdas", 5, true, false, false, "自然生成的 Lambda Player 的最大数量", 1, 500, { type = "Slider", decimals = 0, name = "最大LambdaPlayer数量", category = "MWS"} )
+local spawnrate = CreateLambdaConvar( "lambdaplayers_mws_spawnrate", 2, true, false, false, "Lambda Player 的生成间隔", 0.1, 500, { type = "Slider", decimals = 1, name = "生成间隔", category = "MWS"} )
+local randomspawnrate = CreateLambdaConvar( "lambdaplayers_mws_randomspawnrate", 0, true, false, false, "随机决定每次 Lambda Player 的生成间隔时间，范围为0.1到设置值", 0, 1, { type = "Bool", name = "随机生成间隔", category = "MWS"} )
+local respawn = CreateLambdaConvar( "lambdaplayers_mws_respawning", 1, true, false, false, "允许 MWS 生成的 Lambda Player 复活", 0, 1, { type = "Bool", name = "重生", category = "MWS"} )
+local navmeshspawning = CreateLambdaConvar( "lambdaplayers_mws_spawnonnavmesh", 1, true, false, false, "MWS 生成的 Lambda Player 应使用导航网(Navmesh)的节点作为出生点", 0, 1, { type = "Bool", name = "随机导航网出生点", category = "MWS"} )
+local navmeshspawndist = CreateLambdaConvar( "lambdaplayers_mws_navmeshspawndist", 0, true, false, false, "启用\"随机导航网出生点\"选项时，Lambda Player 的出生点与玩家之间的最大距离限制。设置为0表示不限制。", 0, 10000, { type = "Slider", decimals = 0, name = "导航网出生点距离限制", category = "MWS"} )
 
 local table_insert = table.insert
 local rand = math.Rand
@@ -62,22 +62,30 @@ local personalitypresets = {
 } 
 
 local presettbl = {
-    [ "Random" ] = "random",
-    [ "Builder" ] = "builder",
-    [ "Fighter" ] = "fighter",
-    [ "Custom" ] = "custom",
-    [ "Custom Random" ] = "customrandom"
+    [ "随机" ] = "random",
+    [ "建造型" ] = "builder",
+    [ "进攻型" ] = "fighter",
+    [ "自定义" ] = "custom",
+    [ "随机自定义" ] = "customrandom"
 }
-local perspreset = CreateLambdaConvar( "lambdaplayers_mwspersonality_preset", "random", true, false, false, "The preset MWS Spawned Lambda Personalities should use. Set this to Custom to make use of the chance sliders", nil, nil, { type = "Combo", options = presettbl, name = "Personality Preset", category = "MWS" } )
+local perspreset = CreateLambdaConvar( "lambdaplayers_mwspersonality_preset", "random", true, false, false, "MWS 自然生成的 Lambda Player 的性格预设。设置为 Custom 以使用下方的概率滑块", nil, nil, { type = "Combo", options = presettbl, name = "性格预设", category = "MWS" } )
 local MWSConvars = {}
 
 hook.Add( "LambdaOnModulesLoaded", "lambdaplayers_mwspersonalities", function()
+    local mwsPersonalityTransMap = {
+        ["Build"] = "建造",
+        ["Tool"] = "工具枪",
+        ["Combat"] = "战斗",
+        ["Friendly"] = "友好"
+    }
     for _, v in ipairs( LambdaPersonalityConVars ) do
-        local convar = CreateLambdaConvar( "lambdaplayers_mwspersonality_" .. v[ 1 ] .. "chance", 30, true, false, false, "The chance " .. v[ 1 ] .. " will be executed. Personality Preset should be set to Custom for this slider to effect newly spawned Lambda Players!", 0, 100, { type = "Slider", decimals = 0, name = v[ 1 ] .. " Chance", category = "MWS" } )
-        table_insert( MWSConvars, { v[ 1 ], convar } )
+        local mwsPersonalityName = v[1]
+        local mwsPersonalityTransVal = mwsPersonalityTransMap[mwsPersonalityName] or mwsPersonalityName
+        local convar = CreateLambdaConvar( "lambdaplayers_mwspersonality_" .. mwsPersonalityName .. "chance", 30, true, false, false, "进行" .. mwsPersonalityTransVal .. " 行为的概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", 0, 100, { type = "Slider", decimals = 0, name = mwsPersonalityTransVal .. "行为概率", category = "MWS" } )
+        table_insert( MWSConvars, { mwsPersonalityName, convar } )
     end
-    CreateLambdaConvar( "lambdaplayers_mwspersonality_voicechance", 30, true, false, false, "The chance Voice will be executed. Personality Preset should be set to Custom for this slider to effect newly spawned Lambda Players!", 0, 100, { type = "Slider", decimals = 0, name = "Voice Chance", category = "MWS" } )
-    CreateLambdaConvar( "lambdaplayers_mwspersonality_textchance", 30, true, false, false, "The chance Text will be executed. Personality Preset should be set to Custom for this slider to effect newly spawned Lambda Players!", 0, 100, { type = "Slider", decimals = 0, name = "Text Chance", category = "MWS" } )
+    CreateLambdaConvar( "lambdaplayers_mwspersonality_voicechance", 30, true, false, false, "进行语音行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "语音行为概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", category = "MWS" } )
+    CreateLambdaConvar( "lambdaplayers_mwspersonality_textchance", 30, true, false, false, "进行聊天行为的概率", 0, 100, { type = "Slider", decimals = 0, name = "聊天行为概率。性格预设设定为 Custom 以启用滑块。仅能影响之后生成的 Lambda Player", category = "MWS" } )
 end )
 
 CreateLambdaConsoleCommand( "lambdaplayers_cmd_openmwscustompersonalitypresetpanel", function( ply ) 
@@ -88,7 +96,7 @@ CreateLambdaConsoleCommand( "lambdaplayers_cmd_openmwscustompersonalitypresetpan
         tbl[ v[ 2 ]:GetName() ] = v[ 2 ]:GetDefault()
     end
     LAMBDAPANELS:CreateCVarPresetPanel( "Custom Personality Preset Editor", tbl, "custommwspersonalities", false )
-end, true, "Opens a panel to allow you to create custom preset personalities and load them", { name = "Custom Personality Presets", category = "MWS" } )
+end, true, "创建和加载自定义性格预设", { name = "自定义性格预设", category = "MWS" } )
 
 
 
@@ -205,7 +213,7 @@ local function OpenSpawnWeaponPanel( ply )
     end )
 end
 
-CreateLambdaConsoleCommand( "lambdaplayers_mws_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "Opens a panel that allows you to select the weapon the next MWS spawned Lambda Player will start with", { name = "Select Spawn Weapon", category = "MWS" } )
+CreateLambdaConsoleCommand( "lambdaplayers_mws_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "设置 MWS 自然生成的 Lambda Player 生成时自带的武器", { name = "设置自带武器", category = "MWS" } )
 
 
 

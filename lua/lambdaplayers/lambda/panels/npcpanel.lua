@@ -5,7 +5,7 @@ local function OpenNPCPanel( ply )
 
     local frame = LAMBDAPANELS:CreateFrame( "NPC Panel", 600, 500 )
     local resettodefault = vgui.Create( "DButton", frame )
-    LAMBDAPANELS:CreateLabel( "Click on a NPC on the left to register it for use. Right click a row to the right to unregister it for use", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "左键添加，右键移除", frame, TOP )
     local leftpnl = vgui.Create( "DPanel", frame )
     LAMBDAPANELS:CreateLabel( "NPCs", leftpnl, TOP )
     local scroll = LAMBDAPANELS:CreateScrollPanel( leftpnl )
@@ -96,4 +96,4 @@ local function OpenNPCPanel( ply )
     end )
 
 end
-RegisterLambdaPanel( "NPC Spawnlist", "Opens a panel that allows you to choose what NPCs Lambdas are allowed to spawn. You must be a Super Admin to use this Panel.", OpenNPCPanel )
+RegisterLambdaPanel( "NPC Spawnlist", "设置允许 Lambda Player 生成的NPC\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenNPCPanel )

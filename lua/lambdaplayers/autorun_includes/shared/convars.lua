@@ -115,8 +115,8 @@ CreateLambdaConvar( "lambdaplayers_voice_warnvoicestereo", 0, true, true, false,
 CreateLambdaConvar( "lambdaplayers_displayarmor", 0, true, true, false, "看向 Lambda Player 时，显示目标的护甲值百分比", 0, 1, { type = "Bool", name = "显示护甲", category = "Lambda Player Settings" } )
 
 CreateLambdaConvar( "lambdaplayers_useplayermodelcolorasdisplaycolor", 0, true, true, true, "将 Lambda Player 的玩家模型颜色(Playermodel Color)设置为显示颜色。此选项的优先级高于下方的显示颜色选项", 0, 1, { type = "Bool", name = "玩家模型颜色作为显示颜色", category = "Misc" } )
-CreateLambdaColorConvar( "lambdaplayers_displaycolor", defDisplayClr, true, true, "用于名称显示以及其他显示的显示颜色", { name = "显示颜色", category = "Misc" } )
-CreateLambdaConvar( "lambdaplayers_animatedpfpsprayframerate", 10, true, true, false, "喷漆(Spray) VTFs 以及资料图片(Profile Picture) VTFs 的帧率", 1, 60, { type = "Slider", decimals = 0, name = "VTF 动画帧率", category = "Misc" } )
+CreateLambdaColorConvar( "lambdaplayers_displaycolor", defDisplayClr, true, true, "Lambda Player 的名称显示以及其他显示的显示颜色", { name = "显示颜色", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_animatedpfpsprayframerate", 10, true, true, false, "Lambda Player 的喷漆(Spray) VTFs 以及资料图片(Profile Picture) VTFs 的帧率", 1, 60, { type = "Slider", decimals = 0, name = "VTF 动画帧率", category = "Misc" } )
 CreateLambdaConvar( "lambdaplayers_randomizepathingcost", 0, true, false, false, "Lambda Player将尝试不同的路径到达目的地，而不是固定使用最短和最快的路径", 0, 1, { type = "Bool", name = "随机寻路成本", category = "Misc" } )
 --
 
@@ -166,12 +166,12 @@ CreateLambdaConvar( "lambdaplayers_lambda_shouldrespawn", 0, true, true, true, "
 --
 
 -- Building Convars
-CreateLambdaConvar( "lambdaplayers_building_caneditworld", 1, true, false, false, "允许 Lambda Players 使用物理枪与工具枪编辑地图物体", 0, 1, { type = "Bool", name = "允许编辑地图物体", category = "Building" } )
-CreateLambdaConvar( "lambdaplayers_building_caneditnonworld", 1, true, false, false, "允许 Lambda Players 使用物理枪与工具枪编辑非地图物体，例如：玩家生成的实体与插件生成的实体", 0, 1, { type = "Bool", name = "允许编辑非地图物体", category = "Building" } )
-CreateLambdaConvar( "lambdaplayers_building_canedityourents", 1, true, true, true, "允许 Lambda Players 使用物理枪与工具枪编辑你生成的道具与实体", 0, 1, { type = "Bool", name = "允许编辑你的物体", category = "Building" } )
-CreateLambdaConvar( "lambdaplayers_lambda_allowphysgunpickup", 1, true, false, false, "允许 Lambda Players 使用物理枪移动物品", 0, 1, { type = "Bool", name = "允许使用物理枪", category = "Building" } )
-CreateLambdaConvar( "lambdaplayers_building_freezeprops", 0, true, false, false, "Lambda Players 生成的道具应具有以下效果中的任意一种：生成后立即冻结、生成10秒后被冻结。这能改善游戏性能", 0, 1, { type = "Bool", name = "冻结道具", category = "Building" } )
-CreateLambdaConvar( "lambdaplayers_building_alwaysfreezelargeprops", 0, true, false, false, "Lambda Players 生成的大型道具总是被冻结。这能改善游戏性能", 0, 1, { type = "Bool", name = "冻结大型道具", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_building_caneditworld", 1, true, false, false, "允许 Lambda Player 使用物理枪与工具枪编辑地图物体", 0, 1, { type = "Bool", name = "允许编辑地图物体", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_building_caneditnonworld", 1, true, false, false, "允许 Lambda Player 使用物理枪与工具枪编辑非地图物体，例如：玩家生成的实体与插件生成的实体", 0, 1, { type = "Bool", name = "允许编辑非地图物体", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_building_canedityourents", 1, true, true, true, "允许 Lambda Player 使用物理枪与工具枪编辑你生成的道具与实体", 0, 1, { type = "Bool", name = "允许编辑你的物体", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_lambda_allowphysgunpickup", 1, true, false, false, "允许 Lambda Player 使用物理枪移动物品", 0, 1, { type = "Bool", name = "允许使用物理枪", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_building_freezeprops", 0, true, false, false, "Lambda Player 生成的道具应具有以下效果中的任意一种：生成后立即冻结、生成10秒后被冻结。这能改善游戏性能", 0, 1, { type = "Bool", name = "冻结道具", category = "Building" } )
+CreateLambdaConvar( "lambdaplayers_building_alwaysfreezelargeprops", 0, true, false, false, "Lambda Player 生成的大型道具总是立即被冻结。这能改善游戏性能", 0, 1, { type = "Bool", name = "冻结大型道具", category = "Building" } )
 CreateLambdaConvar( "lambdaplayers_building_cleanupondeath", 0, true, false, false, "由可重生的 Lambda Player 生成的实体将在他们死后被清理\n(非可重生的 Lambda Player 生成的实体将在他们死后自动清理)", 0, 1, { type = "Bool", name = "死后清理实体", category = "Building" } )
 --
 

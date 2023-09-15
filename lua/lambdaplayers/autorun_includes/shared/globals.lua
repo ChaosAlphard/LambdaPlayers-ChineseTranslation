@@ -231,7 +231,7 @@ local function OpenWeaponPermissionPanel( ply )
     mainframe:OnSizeChanged( mainframe:GetWide() )
 end
 
-CreateLambdaConsoleCommand( "lambdaplayers_lambda_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "选择 Lambda Player 出生时自带的武器", { name = "设置出生武器", category = "Lambda Weapons" } )
+CreateLambdaConsoleCommand( "lambdaplayers_lambda_openspawnweaponpanel", OpenSpawnWeaponPanel, true, "选择 Lambda Player 生成时自带的武器", { name = "设置自带武器", category = "Lambda Weapons" } )
 CreateLambdaConsoleCommand( "lambdaplayers_lambda_openweaponpermissionpanel", OpenWeaponPermissionPanel, true, "选择 Lambda Player 可以使用的武器", { name = "设置武器许可", category = "Lambda Weapons" } )
 
 -- One part of the duplicator support

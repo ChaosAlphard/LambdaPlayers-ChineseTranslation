@@ -670,4 +670,4 @@ end
 
 
 
-RegisterLambdaPanel( "DEV Kill Icon Maker", "Opens a panel that allows you to easily create a killicon using a model. THIS IS MEANT FOR DEVELOPERS ONLY!", OpenPropPanel )
+RegisterLambdaPanel( "DEV Kill Icon Maker", "使用模型创建一个击杀图标。仅供开发者使用！", OpenPropPanel )

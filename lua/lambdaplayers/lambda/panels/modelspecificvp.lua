@@ -16,8 +16,8 @@ local function OpenModelVoiceProfilePanel( ply )
     end
 
     local frame = LAMBDAPANELS:CreateFrame( "Playermodel Voice Profile", 700, 500 )
-    LAMBDAPANELS:CreateLabel( "Select a playermodel from the right panel and pick a voice profile from the list below it", frame, TOP )
-    LAMBDAPANELS:CreateLabel( "Changes are applied by a button below the list", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "点击图标选择Playermodel，点击下拉框选择VoiceProfile", frame, TOP )
+    LAMBDAPANELS:CreateLabel( "点击Apply按钮应用更改", frame, TOP )
 
     function frame:OnClose()
         chat.AddText( "Remember to Update Lambda Data after any changes!" )
@@ -93,4 +93,4 @@ local function OpenModelVoiceProfilePanel( ply )
     end
 end
 
-RegisterLambdaPanel( "Playermodel Voice Profile", "Opens a panel that allows you to set a Lambda voice profile to a specific playermodel. YOU MUST UPDATE LAMBDA DATA AFTER ANY CHANGES! You must be a Super Admin to use this panel!", OpenModelVoiceProfilePanel )
+RegisterLambdaPanel( "Playermodel Voice Profile", "将语音配置文件(VoiceProfile)设置到指定的玩家模型(Playermodel)\n服务器管理员才能设置。修改后需要更新Lambda数据", OpenModelVoiceProfilePanel )
