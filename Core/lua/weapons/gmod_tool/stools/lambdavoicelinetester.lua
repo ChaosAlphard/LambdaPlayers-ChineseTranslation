@@ -54,7 +54,7 @@ end
 
 function TOOL.BuildCPanel( pnl )
 
-    local box = pnl:ComboBox( "Voice Type", "lambdavoicelinetester_voicetype" )
+    local box = pnl:ComboBox( "语音类型", "lambdavoicelinetester_voicetype" )
 
     for k, v in pairs( LambdaVoiceLinesTable ) do
         box:AddChoice( k, k )
@@ -62,7 +62,7 @@ function TOOL.BuildCPanel( pnl )
 
     pnl:ControlHelp( "使用工具左键点击时要播放的语音类型\nidle：闲逛时的语音\ntaunt：挑衅时的语音\ndeath：死亡时的语音\nkill：击杀时的语音\nlaugh：嘲笑时的语音\nfall：摔落时的语音\nassist：助攻时的语音\nwitness：目击其他LambdaPlayer被杀死时的语音\npanic：恐慌时的语音" )
 
-    pnl:TextEntry( "Sound Path", "lambdavoicelinetester_voicelinepath" )
+    pnl:TextEntry( "语音文件路径", "lambdavoicelinetester_voicelinepath" )
     pnl:ControlHelp( "使用工具右键点击时要播放的语音文件的路径" )
 
 end

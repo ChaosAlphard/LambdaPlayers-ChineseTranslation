@@ -152,7 +152,7 @@ CreateLambdaConvar( "lambdaplayers_lambda_physupdatetime", 0.5, true, false, fal
 
 -- Combat Convars 
 CreateLambdaConvar( "lambdaplayers_combat_allowtargetyou", 1, true, true, true, "允许 Lambda Player 将你作为攻击目标", 0, 1, { type = "Bool", name = "允许被攻击", category = "Combat" } )
-CreateLambdaConvar( "lambdaplayers_combat_retreatonlowhealth", 1, true, false, false, "Lambda Player 在低血量时会尝试逃跑\nIf Lambda Players should start retreating if they are low on health, or witnessed/committed RDM", 0, 1, { type = "Bool", name = "低血量逃跑", category = "Combat" } )
+CreateLambdaConvar( "lambdaplayers_combat_retreatonlowhealth", 1, true, false, false, "Lambda Player 在低血量时会尝试逃跑，这也会使他们在看见 RDM 时会尝试逃离", 0, 1, { type = "Bool", name = "低血量逃跑", category = "Combat" } )
 CreateLambdaConvar( "lambdaplayers_combat_spawnbehavior", 0, true, false, false, "Lambda Player 在生成后的行为。0 - 无, 1 - 攻击你, 2 - 随机", 0 , 2, { type = "Slider", decimals = 0, name = "修改生成后行为", category = "Combat" } )
 CreateLambdaConvar( "lambdaplayers_combat_spawnmedkits", 1, true, false, false, "允许 Lambda Player 在低血量时生成医疗包治疗自己。需要允许 Lambda Player 生成实体", 0 , 1, { type = "Bool", name = "生成医疗包", category = "Combat" } )
 CreateLambdaConvar( "lambdaplayers_combat_spawnbatteries", 1, true, false, false, "允许 Lambda Player 在低护甲值时生成护甲电池来补充护甲。需要允许 Lambda Player 生成实体", 0 , 1, { type = "Bool", name = "生成护甲电池", category = "Combat" } )
