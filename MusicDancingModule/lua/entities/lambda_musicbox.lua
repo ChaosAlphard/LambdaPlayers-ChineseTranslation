@@ -51,7 +51,7 @@ if SERVER then
         local musicbox = net.ReadEntity()
         local duration = net.ReadFloat()
         if !IsValid( musicbox ) then return end
-        
+
         musicbox:SetMusicDuration( CurTime() + duration )
     end )
 end
@@ -64,16 +64,16 @@ local function DataSplit( data )
 
     for i = 0, #data do
         buffer[ #buffer + 1 ] = string_sub( data, i, i )
-                
+
         if #buffer == 32768 then
             result[ #result + 1 ] = table_concat( buffer )
                 index = index + 1
             buffer = {}
         end
     end
-            
+
     result[ #result + 1 ] = table_concat( buffer )
-    
+
     return result
 end
 
@@ -119,7 +119,7 @@ function ENT:Initialize()
             if !IsValid( self.l_musicchannel ) then return end
             if self:GetPos():DistToSqr( LocalPlayer():GetPos() ) >= ( 2000 * 2000 ) then return end
 
-            
+
             self.l_musicchannel:FFT( self.l_FFT, GetConVar( "lambdaplayers_musicbox_samples" ):GetInt() )
 
             local zadd = Vector( 0, 0, 2 + self:OBBMaxs()[ 3 ] )
@@ -141,7 +141,7 @@ function ENT:Initialize()
                     end
                 end
 
-                local rainbow = HSVToColor( ( CurTime() * 10 ) % 360, 1, 1 )  
+                local rainbow = HSVToColor( ( CurTime() * 10 ) % 360, 1, 1 )
 
                 if dlight then
                     dlight.pos = self:GetPos()
@@ -155,28 +155,28 @@ function ENT:Initialize()
                 end
 
             end
-            
+
             render_SetColorMaterial()
 
-             for i = 1, n do
+            for i = 1, n do
                 local deg = ( math_pi / n * i ) * 2
                 local x = math_sin( deg )
                 local y = math_cos( deg )
                 local pos = Vector( x, y + high / mul, 0 ) * mul
 
                 local ang = ( ( self:GetPos() + zadd ) - ( ( self:GetPos() + zadd ) + pos ) ):Angle() + Angle( -90, 0, 0 )
-                
-                
+
+
                 local hue = ( CurTime() * 10 ) % 360 + 360 / n * i
                 local col = HSVToColor( math_Clamp( hue % 360, 0, 360 ),1 ,1 )
 
                 render_DrawBox( ( self:GetPos() + zadd ) + pos, ang, Vector(), Vector( 1, 1, 1 + ( self.l_FFT[ i % ( n / NumSegment ) ] or 0 )*fftmul ),col )
-             end
-        
+            end
+
         end )
 
     end
-   
+
 end
 
 function ENT:SetupDataTables()
@@ -211,7 +211,7 @@ function ENT:Think()
             local dist = LocalPlayer():GetPos():DistToSqr( self:GetPos() )
             local volume = math_Clamp( GetConVar("lambdaplayers_musicbox_musicvolume"):GetFloat() / ( dist / ( 7000 * 30 ) ), 0, GetConVar( "lambdaplayers_musicbox_musicvolume" ):GetFloat() )
             self.l_musicchannel:SetVolume( volume )
-        else 
+        else
             self.l_musicchannel:SetVolume( GetConVar("lambdaplayers_musicbox_musicvolume"):GetFloat() )
         end
     end
@@ -221,13 +221,13 @@ function ENT:Think()
             self:Remove()
             return
         end
-        
+
         self:PlayMusic()
         self.l_firstplayed = false
     elseif SERVER and self:IsPlaying() and CurTime() > self.l_nextdancewave then
         for k, v in RandomPairs( GetLambdaPlayers() ) do
             if LambdaIsValid( v ) and v:GetRangeSquaredTo( self:GetPos() ) <= ( 2000 * 2000 ) and random( 0, 100 ) < GetConVar( "lambdaplayers_musicbox_dancechance" ):GetInt() then
-                v:DanceNearEnt( self ) 
+                v:DanceNearEnt( self )
                 break
             end
         end
@@ -247,24 +247,24 @@ function ENT:Think()
         self:PlayMusicClientSide()
     end
     --
-    
+
 end
 
 function ENT:SpawnFunction( ply, tr, classname )
     if !tr.Hit then return end
-	
+
 	local SpawnPos = tr.HitPos + tr.HitNormal * 10
 	local SpawnAng = ply:EyeAngles()
 	SpawnAng.p = 0
 	SpawnAng.y = SpawnAng.y + 180
-	
+
 	local ent = ents.Create( classname )
 	ent:SetPos( SpawnPos )
 	ent:SetAngles( SpawnAng )
     ent:SetSpawner( ply )
     ent:SetPlayer( ply )
 	ent:Spawn()
-	
+
     return ent
 end
 
@@ -283,7 +283,7 @@ end
 
 -- Play some music unless a specified track is played
 function ENT:PlayMusic( specifictrack )
-    local track 
+    local track
 
     if ( IsValid( self:GetSpawner() ) and self:GetSpawner():IsPlayer() and self:GetSpawner():GetInfoNum( "lambdaplayers_musicbox_shufflemusic", 0 ) == 1  ) or !IsValid( self:GetSpawner() ) or self:GetSpawner().IsLambdaPlayer  then
         track = self.l_musiclist[ random( #self.l_musiclist ) ]
@@ -307,7 +307,7 @@ function ENT:PlayMusic( specifictrack )
 
     for k, v in ipairs( GetLambdaPlayers() ) do
         if LambdaIsValid( v ) and v:GetRangeSquaredTo( self:GetPos() ) <= ( 2000 * 2000 ) and random( 0, 100 ) < GetConVar( "lambdaplayers_musicbox_dancechance" ):GetInt() then
-            v:DanceNearEnt( self ) 
+            v:DanceNearEnt( self )
         end
     end
 
@@ -316,13 +316,13 @@ end
 if CLIENT then
 
     function ENT:PlayMusicClientSide()
-        if table.IsEmpty( self.l_clmusiclist ) then 
+        if table.IsEmpty( self.l_clmusiclist ) then
             self:PopulateMusicList()
             self.l_musicduration = SysTime() + 0.5
             return
         end
 
-        local track 
+        local track
 
         if GetConVar( "lambdaplayers_musicbox_shufflemusic" ):GetBool() or !IsValid( self:GetSpawner() ) or self:GetSpawner().IsLambdaPlayer then
             track = self.l_clmusiclist[ random( #self.l_clmusiclist ) ]
@@ -332,7 +332,7 @@ if CLIENT then
         end
 
         self.l_musicduration = SysTime() + 2
-    
+
         track = specifictrack or self.l_islooped and self.l_realtrackname or track
 
         self:PlayTrack( track )
@@ -344,7 +344,7 @@ if CLIENT then
 
         self.l_no3d = no3d
 
-        local flags = no3d and "mono" or "3d mono"  
+        local flags = no3d and "mono" or "3d mono"
 
         sound.PlayFile( "sound/" .. track, flags, function( chan, id, name )
             if id then
@@ -356,7 +356,7 @@ if CLIENT then
                 elseif id == 21 then
                     self:PlayTrack( track, true ) -- Track failed to play in 3d. Play in stereo
                 end
-                
+
                 return
             end
 
@@ -368,8 +368,8 @@ if CLIENT then
 
             chan:Play()
 
-            
-        
+
+
         end )
 
     end
@@ -459,7 +459,7 @@ if CLIENT then
 
         self.l_no3d = no3d
 
-        local flags = no3d and "mono" or "3d mono"  
+        local flags = no3d and "mono" or "3d mono"
 
         sound.PlayFile( "sound/" .. track, flags, function( chan, id, name )
             if id then
@@ -472,7 +472,7 @@ if CLIENT then
 
                     PlayMusicTrack( self, track, true ) -- Track failed to play in 3d. Play in stereo
                 end
-                
+
                 return
             end
 
@@ -485,11 +485,11 @@ if CLIENT then
             net.WriteEntity( self )
             net.WriteFloat( chan:GetLength() )
             net.SendToServer()
-        
+
         end )
 
     end
-    
+
     net.Receive( "lambdaplayers_musicbox_playmusic", function()
         if clientmodecvar:GetBool() then return end
         local musicbox = net.ReadEntity()
@@ -514,7 +514,7 @@ if CLIENT then
             musicbox.l_musiclist = JSONToTable( buildstring )
             receiving = false
         end
-        
+
     end )
 
 end
@@ -522,11 +522,11 @@ end
 
 
 properties.Add("Music Tracks", {
-    MenuLabel = "Music Tracks",
+    MenuLabel = "选择音乐",
     Order = 500,
     MenuIcon = "icon16/cd.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if !gamemode.Call( "CanProperty", ply, "Music Tracks", ent ) then return false end
@@ -548,7 +548,7 @@ properties.Add("Music Tracks", {
             for i = 1, #copy do
 
                 submenu:AddOption( TrackPrettyprint( copy[ i ] ), function()
-                
+
                     self:MsgStart()
                         net.WriteEntity( ent )
                         net.WriteString( copy[ i ] )
@@ -595,11 +595,11 @@ properties.Add("Music Tracks", {
 
 
 properties.Add( "Enable Loop", {
-    MenuLabel = "Enable Loop",
+    MenuLabel = "启用循环",
     Order = 498,
     MenuIcon = "icon16/arrow_rotate_anticlockwise.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if ply:GetInfoNum( "lambdaplayers_musicbox_clientsidemode", 0 ) == 1 then return false end
@@ -608,8 +608,8 @@ properties.Add( "Enable Loop", {
 
         return true
     end,
-    
-    Action = function( self, ent ) 
+
+    Action = function( self, ent )
         self:MsgStart()
             net.WriteEntity( ent )
         self:MsgEnd()
@@ -629,11 +629,11 @@ properties.Add( "Enable Loop", {
 })
 
 properties.Add( "Disable Loop", {
-    MenuLabel = "Disable Loop",
+    MenuLabel = "禁用循环",
     Order = 498,
     MenuIcon = "icon16/cancel.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if ply:GetInfoNum( "lambdaplayers_musicbox_clientsidemode", 0 ) == 1 then return false end
@@ -643,7 +643,7 @@ properties.Add( "Disable Loop", {
         return true
     end,
 
-    Action = function( self, ent ) 
+    Action = function( self, ent )
         self:MsgStart()
             net.WriteEntity( ent )
         self:MsgEnd()
@@ -665,30 +665,30 @@ properties.Add( "Disable Loop", {
 
 -- CLIENT SIDE MODE LOOPING --
 properties.Add( "Enable Loop Client Side", {
-    MenuLabel = "Enable Loop",
+    MenuLabel = "启用循环",
     Order = 498,
     MenuIcon = "icon16/arrow_rotate_anticlockwise.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if ply:GetInfoNum( "lambdaplayers_musicbox_clientsidemode", 0 ) == 0 then return false end
 
         return true
     end,
-    
-    Action = function( self, ent ) 
+
+    Action = function( self, ent )
         ent.l_islooped = true
     end,
 
 })
 
 properties.Add( "Disable Loop Client Side", {
-    MenuLabel = "Disable Loop",
+    MenuLabel = "禁用循环",
     Order = 498,
     MenuIcon = "icon16/cancel.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if ply:GetInfoNum( "lambdaplayers_musicbox_clientsidemode", 0 ) == 0 then return false end
@@ -696,7 +696,7 @@ properties.Add( "Disable Loop Client Side", {
         return true
     end,
 
-    Action = function( self, ent ) 
+    Action = function( self, ent )
         ent.l_islooped = false
     end,
 
@@ -704,11 +704,11 @@ properties.Add( "Disable Loop Client Side", {
 -------------------
 
 properties.Add( "Play Next Track", {
-    MenuLabel = "Play Next Track",
+    MenuLabel = "播放下一首",
     Order = 497,
     MenuIcon = "icon16/arrow_rotate_anticlockwise.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if !gamemode.Call( "CanProperty", ply, "Play Next Track", ent ) then return false end
@@ -716,14 +716,14 @@ properties.Add( "Play Next Track", {
         return true
     end,
 
-    Action = function( self, ent ) 
+    Action = function( self, ent )
         if !clientmodecvar:GetBool() then
 
             self:MsgStart()
                 net.WriteEntity( ent )
             self:MsgEnd()
 
-        else 
+        else
             ent:PlayMusicClientSide()
         end
     end,
@@ -743,11 +743,11 @@ properties.Add( "Play Next Track", {
 
 
 properties.Add( "Restart Current Track", {
-    MenuLabel = "Restart Current Track",
+    MenuLabel = "重新播放当前音乐",
     Order = 499,
     MenuIcon = "icon16/arrow_rotate_anticlockwise.png",
 
-    Filter = function( self, ent, ply ) 
+    Filter = function( self, ent, ply )
         if !IsValid( ent ) then return false end
         if ent:GetClass() != "lambda_musicbox" then return false end
         if !gamemode.Call( "CanProperty", ply, "Restart Current Track", ent ) then return false end
@@ -755,14 +755,14 @@ properties.Add( "Restart Current Track", {
         return true
     end,
 
-    Action = function( self, ent ) 
+    Action = function( self, ent )
         if !clientmodecvar:GetBool() then
 
             self:MsgStart()
                 net.WriteEntity( ent )
             self:MsgEnd()
 
-        else 
+        else
             ent:PlayTrack( ent.l_realtrackname )
         end
     end,
