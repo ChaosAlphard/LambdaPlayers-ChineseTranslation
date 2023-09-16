@@ -3,14 +3,14 @@ local color_white = color_white
 local rand = math.Rand
 local random = math.random
 
-CreateLambdaConvar( "lambdaplayers_cd_showconnectmessage", 1, true, false, false, "If a join message should show in chat when a Lambda Player spawns", 0, 1, { type = "Bool", name = "Show Connect Message", category = "Misc" } )
-CreateLambdaConvar( "lambdaplayers_cd_connectmessage", "connected to the server", true, false, false, "The message to show when a Lambda Player spawns", nil, nil, { type = "Text", name = "Connect Text", category = "Misc" } )
-CreateLambdaConvar( "lambdaplayers_cd_allowdisconnecting", 1, true, false, false, "If Lambda Players are allowed to disconnect", 0, 1, { type = "Bool", name = "Allow Disconnecting", category = "Misc" } )
-CreateLambdaConvar( "lambdaplayers_cd_disconnectmessage", "disconnected from the server", true, false, false, "The message to show when a Lambda Player disconnects", nil, nil, { type = "Text", name = "Disconnect Text", category = "Misc" } )
-CreateLambdaConvar( "lambdaplayers_cd_disconnecttime", 5000, true, false, false, "The max amount of time it can take for a Lambda to disconnect", 15, 5000, { type = "Slider", decimals = 0, name = "Disconnect Time", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_cd_showconnectmessage", 1, true, false, false, "在 Lambda Player 加入服务器(生成)时显示一条消息", 0, 1, { type = "Bool", name = "发送加入消息", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_cd_connectmessage", "加入服务器", true, false, false, "Lambda Player 加入服务器(生成)时显示的消息", nil, nil, { type = "Text", name = "加入服务器消息", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_cd_allowdisconnecting", 1, true, false, false, "允许 Lambda Player 在一定时间后自动离开服务器", 0, 1, { type = "Bool", name = "允许退出服务器", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_cd_disconnectmessage", "离开服务器", true, false, false, "Lambda Player 离开服务器时显示的消息", nil, nil, { type = "Text", name = "退出服务器消息", category = "Misc" } )
+CreateLambdaConvar( "lambdaplayers_cd_disconnecttime", 5000, true, false, false, "Lambda Player 在服务器内停留的最长时间", 15, 5000, { type = "Slider", decimals = 0, name = "退出时间", category = "Misc" } )
 
-local allowdisconnectline = CreateLambdaConvar( "lambdaplayers_cd_allowdisconnectlines", 1, true, false, false, "If Lambdas are allowed to type a message before they disconnect", 0, 1, { type = "Bool", name = "Allow Disconnect Lines", category = "Text Chat Options" } )
-local allowconnectline = CreateLambdaConvar( "lambdaplayers_cd_allowconnectlines", 1, true, false, false, "If Lambdas are allowed to type a message right after they first spawned", 0, 1, { type = "Bool", name = "Allow Connect Lines", category = "Text Chat Options" } )
+local allowdisconnectline = CreateLambdaConvar( "lambdaplayers_cd_allowdisconnectlines", 1, true, false, false, "Lambda Player 在离开服务器前发送一条消息", 0, 1, { type = "Bool", name = "启用离开服务器文本", category = "Text Chat Options" } )
+local allowconnectline = CreateLambdaConvar( "lambdaplayers_cd_allowconnectlines", 1, true, false, false, "Lambda Player 在加入服务器后发送一条消息", 0, 1, { type = "Bool", name = "启用加入服务器文本", category = "Text Chat Options" } )
 
 
 -- This is all very simple. I don't really need to put a lot of documentation on this
